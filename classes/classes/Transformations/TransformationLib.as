@@ -10012,11 +10012,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		},
 		// is present
 		function ():Boolean {
-			return player.breastRows.length == 1;
-		},
-		// is possible
-		function ():Boolean {
-			return player.breastRows.length > 1;
+			return player.breastRows.length <= 1;
 		}
 	);
 
@@ -10037,10 +10033,6 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		// is present
 		function ():Boolean {
 			return player.breastRows.length == 1;
-		},
-		// is possible
-		function ():Boolean {
-			return player.breastRows.length != 1;
 		}
 	);
 
@@ -10064,10 +10056,6 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		// is present
 		function ():Boolean {
 			return player.breastRows.length == 2;
-		},
-		// is possible
-		function ():Boolean {
-			return player.breastRows.length != 2;
 		}
 	);
 
@@ -10096,10 +10084,6 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		// is present
 		function ():Boolean {
 			return player.breastRows.length == 3;
-		},
-		// is possible
-		function ():Boolean {
-			return player.breastRows.length != 3;
 		}
 	);
 
@@ -10125,10 +10109,6 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		// is present
 		function ():Boolean {
 			return player.breastRows.length == 4;
-		},
-		// is possible
-		function ():Boolean {
-			return player.breastRows.length != 4;
 		}
 	);
 
@@ -10168,11 +10148,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		},
 		// is present
 		function ():Boolean {
-			return player.bRows() == 1;
-		},
-		// is possible
-		function ():Boolean {
-			return player.bRows() < 4;
+			return player.bRows() >= 4;
 		}
 	); }
 
@@ -10211,10 +10187,6 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		// is present
 		function ():Boolean {
 			return player.bRows() >= 4;
-		},
-		// is possible
-		function ():Boolean {
-			return player.bRows() < 4;
 		}
 	); }
 
@@ -10235,10 +10207,6 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		// is present
 		function ():Boolean {
 			return player.averageNipplesPerBreast() == 1;
-		},
-		// is possible
-		function ():Boolean {
-			return player.averageNipplesPerBreast() > 1;
 		}
 	);
 
@@ -10266,11 +10234,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		// is present
 		function ():Boolean {
 			return player.averageNipplesPerBreast() == 4;
-		},
-		// is possible
-		function ():Boolean {
-				return player.averageNipplesPerBreast() < 4;
-			}
+		}
 	);
 
 	public const NipplesFuckableForce:Transformation = new SimpleTransformation("Increase Nipple size >= 2",
@@ -10339,6 +10303,23 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 		}
 	);
 
+	public const StartLactation:Transformation = new SimpleTransformation("Start lactating",
+			// apply effect
+			function (doOutput:Boolean):void {
+				var desc: String = "[pg]";
+
+				desc += "You feel your [nipple]s become tight and engorged.  A single droplet of milk escapes each, rolling down the curves of your breasts.  <b>You are now lactating!</b>";
+				for (var i:int = 0; i < player.breastRows.length; i++) {
+					player.breastRows[i].lactationMultiplier += 2;
+				}
+
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function ():Boolean {
+				return player.isLactating();
+			}
+	);
 
 	public const RemoveLactation:Transformation = new SimpleTransformation("Stop lactating",
 		// apply effect
@@ -10494,10 +10475,6 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 			// is present
 			function ():Boolean {
 				return !player.hasVagina();
-			},
-			// is possible
-			function ():Boolean {
-				return !player.hasVagina();
 			}
 		);
 	}
@@ -10525,11 +10502,11 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 			},
 			// is present
 			function ():Boolean {
-				return !player.hasVagina();
+				return player.hasVagina();
 			},
 			// is possible
 			function ():Boolean {
-				return !player.hasVagina();
+				return !player.hasVagina() && player.hasCock();
 			}
 		);
 	}
@@ -10580,9 +10557,9 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 					var desc:String = "[pg]";
 
 					if (player.hasVagina()){
-						desc += "You grip your gut in pain as you feel your organs shift slightly.  When the pressure passes, you realize your [vagina "+(vagina+1)+"] has grown larger, in depth AND size. To your absolute surprise it suddenly resume deepening inside your body. " +
+						desc += "You grip your gut in pain as you feel your organs shift slightly.  When the pressure passes, you realize your [vagina "+(vagina+1)+"] has grown larger, in depth AND size. To your absolute surprise, it suddenly resume deepening inside your body. " +
 								"When you finally take a look you discover your vagina is now not unlike that of a horse, capable of taking the largest cock with ease." +
-								"<b>  You now have a equine vagina!</b>";
+								"<b>  You now have an equine vagina!</b>";
 					}
 					else {
 						desc += GrowVaginaGenericText();
@@ -10985,11 +10962,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 			},
 			// is present
 			function ():Boolean {
-				return !player.hasCock() || cock >= player.cockTotal();
-			},
-			// is possible
-			function ():Boolean {
-				return cock < player.cockTotal();
+				return cock >= player.cockTotal();
 			}
 		);
 	}
@@ -11044,7 +11017,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 						desc += "Your [cock "+(cock+1)+"] begins to feel strange.  You pull down your clothes to take a look and see it darkening";
 
 						desc += player.hasSheath()? "." : " as you feel a tightness near the base where your skin seems to be bunching up.  A sheath begins forming around your cock's base, tightening and pulling your cock inside its depths.";
-						desc += "  The shaft suddenly explodes with movement, growing longer and developing a thick flared head leaking steady stream of animal-cum.  Your cock pushes out of your sheath, inch after inch of animal-flesh growing beyond its previous size and takes on a more leathery texture.";
+						desc += "  The shaft suddenly explodes with movement, growing longer and developing a thick flared head, leaking a steady stream of animal-cum.  Your cock pushes out of your sheath, inch after inch of animal-flesh growing beyond its previous size and takes on a more leathery texture.";
 
 						//Text for dogdicks
 						if (player.hasKnot(cock)) desc += "  You notice your knot vanishing, the extra flesh pushing more fresh horsecock out from your sheath.";
@@ -11092,11 +11065,11 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 						else if (["tentacle","plant"].indexOf(CockTypesEnum.ParseConstant(player.cocks[cock].cockType)) >= 0)
 							desc += "Your [cock "+(cock+1)+"] coils in on itself, reshaping and losing its coloration, becoming a shiny red. You";
 						else desc += "Your [cock "+(cock+1)+"] clenches painfully, becoming achingly, throbbingly erect and turning a shiny red. You"
-						desc += " shudder as the crown of your [cock "+(cock+1)+"] reshapes into a point, the sensations nearly too much for you."
+						desc += " shudder as the crown of your [cock "+(cock+1)+"] reshapes into a point, the sensations nearly too much for you. "
 						if (!player.hasSheath()) desc += "A tightness seems to squeeze around the base, and you wince as you see your skin and flesh shifting forwards into a canine-looking sheath. ";
 						if (player.cocks[cock].knotMultiplier <= 1) desc += "You cry out as you feel a swelling at the base of your cock and your new canine knot slowly slips out of your sheath. "
 						else if (player.cocks[cock].knotMultiplier < knot) desc += "The knot on your new red pecker grows extremely sensitive as it grows thicker than before. ";
-						desc += "You throw back your head as the transformation completes, your cock much thicker than it ever was before.  <b>You now have a dog-cock.</b>";
+						desc += "You throw back your head as the transformation completes, your cock much thicker than before.  <b>You now have a dog-cock.</b>";
 
 					}
 					else {
@@ -11630,11 +11603,11 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 						else if (["tentacle","plant"].indexOf(CockTypesEnum.ParseConstant(player.cocks[cock].cockType)) >= 0)
 							desc += "Your [cock "+(cock+1)+"] coils in on itself, reshaping and losing its coloration, becoming a shiny red. You";
 						else desc += "Your [cock "+(cock+1)+"] clenches painfully, becoming achingly, throbbingly erect and turning a shiny red. You"
-						desc += " shudder as the crown of your [cock "+(cock+1)+"] reshapes into a point, the sensations nearly too much for you."
+						desc += " shudder as the crown of your [cock "+(cock+1)+"] reshapes into a point, the sensations nearly too much for you. "
 						if (!player.hasSheath()) desc += "A tightness seems to squeeze around the base, and you wince as you see your skin and flesh shifting forwards into a canine-looking sheath. ";
 						if (player.cocks[cock].knotMultiplier <= 1) desc += "You cry out as you feel a swelling at the base of your cock and your new canine knot slowly slips out of your sheath. "
 						else if (player.cocks[cock].knotMultiplier < knot) desc += "The knot on your new red pecker grows extremely sensitive as it grows thicker than before. ";
-						desc += "You throw back your head as the transformation completes, your cock much thicker than it ever was before.  <b>You now have a fox-cock.</b>";
+						desc += "You throw back your head as the transformation completes, your cock much thicker than before.  <b>You now have a fox-cock.</b>";
 
 					}
 					else {
@@ -11770,12 +11743,12 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 					if (player.cocks.length > cock){
 						desc += "You feel a stirring in your loins as your [cock "+(cock+1)+"] grows rock hard. ";
 						desc += "You " + player.clothedOrNakedLower("pull it out from your [armor]", "lean over");
-						desc += (inBlackCock? ", right there in the center of The Black Cock":"") +", to take a look. You watch as the skin of your cock becomes a smooth, tough pink colored phallus. It takes on a long and narrow shape with an oval shaped bulge along the center. You feel a tightness near the base where your skin seems to be bunching up. A sheath begins forming around your flared rhino cock’s root, tightening as your stiff rhino dick elongates and settles, the thick flared head leaking a steady stream of funky animal-cum. <b>You now have a rhino-dick.</b>";
+						desc += (inBlackCock? ", right there in the center of The Black Cock":"") +", to take a look. You watch as the skin of your cock becomes a smooth, tough pink colored phallus. It takes on a long and narrow shape with an oval shaped bulge along the center. You feel a tightness near the base where your skin seems to be bunching up. A sheath begins forming around your flared rhino cock’s root, tightening as your stiff rhino dick elongates and settles, the thick flared head, leaking a steady stream of funky animal-cum. <b>You now have a rhino-dick.</b>";
 
 					}
 					else {
 						desc += GrowCockGenericText();
-						desc += "the skin of your cock becomes a smooth, tough pink colored phallus. It takes on a long and narrow shape with an oval shaped bulge along the center. You feel a tightness near the base where your skin seems to be bunching up. A sheath begins forming around your flared rhino cock’s root, tightening as your stiff rhino dick elongates and settles, the thick flared head leaking a steady stream of funky animal-cum. <b>You now have a rhino-dick.</b>";
+						desc += "the skin of your cock becomes a smooth, tough pink colored phallus. It takes on a long and narrow shape with an oval shaped bulge along the center. You feel a tightness near the base where your skin seems to be bunching up. A sheath begins forming around your flared rhino cock’s root, tightening as your stiff rhino dick elongates and settles, the thick flared head, leaking a steady stream of funky animal-cum. <b>You now have a rhino-dick.</b>";
 						player.createCock();
 					}
 					if (doOutput) outputText(desc);
@@ -11837,14 +11810,14 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 					if (player.cocks.length > cock){
 						desc += "Your " + cockDescript(cock) + " clenches painfully, becoming achingly, throbbingly erect. ";
 						if (!player.hasSheath()) desc +="A tightness seems to squeeze around the base, and you wince as you see your skin and flesh shifting forwards into a canine-looking sheath. ";
-						desc += "You shudder as the crown of your prick reshapes into a point, the sensations nearly too much for you. You throw back your head as the transformation completes, your knotted wolf-cock much thicker than it ever was before.";
+						desc += "You shudder as the crown of your prick reshapes into a point, the sensations nearly too much for you. You throw back your head as the transformation completes, your knotted wolf-cock much thicker than before.";
 						if (player.cocks[cock].knotMultiplier < knot) desc += "The knot on your new red pecker grows extremely sensitive as it grows thicker than before. ";
 						desc += "  <b>You now have a wolf-cock.</b>";
 					}
 					else {
 						desc += GrowCockGenericText();
 						desc += "A tightness seems to squeeze around the base, and you wince as you see your skin and flesh shifting forwards into a canine-looking sheath. ";
-						desc += "You shudder as the crown of your prick reshapes into a point, the sensations nearly too much for you. You throw back your head as the transformation completes, your knotted wolf-cock much thicker than it ever was before.";
+						desc += "You shudder as the crown of your prick reshapes into a point, the sensations nearly too much for you. You throw back your head as the transformation completes, your knotted wolf-cock much thicker than before.";
 						desc += "  <b>You now have a wolf-cock.</b>";
 						player.createCock();
 					}
