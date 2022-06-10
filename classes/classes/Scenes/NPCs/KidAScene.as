@@ -1,11 +1,11 @@
-﻿/**
+/**
  * Created by aimozg on 02.01.14.
  */
 package classes.Scenes.NPCs
 {
 import classes.*;
 import classes.GlobalFlags.kFLAGS;
-import classes.Items.Weapon;
+import classes.Items.*;
 import classes.Scenes.Places.Boat.AnemoneScene;
 import classes.display.SpriteDb;
 
@@ -50,6 +50,28 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 		}
 		//End of Interface Implementation
 
+		public function weaponName():String {
+			if (flags[kFLAGS.ANEMONE_WEAPON_ID] == 0) {
+				return "<b>ERROR: No weapon</b>";
+			}
+			var item:* = ItemType.lookupItem(flags[kFLAGS.ANEMONE_WEAPON_ID]);
+			if (item is Weapon || item is Shield) return item.name;
+			switch (item) {
+				case consumables.W__BOOK: return "white book";
+				case consumables.B__BOOK: return "black book";
+				case consumables.W_STICK: return "wingstick";
+				default: return "<b>ERROR: Unknown item, update AnemoneScene.weaponName()</b>";
+			}
+		}
+
+		public function weaponNameLong():String {
+			if (flags[kFLAGS.ANEMONE_WEAPON_ID] == 0) {
+				return "<b>ERROR: No weapon</b>";
+			}
+			var item:* = ItemType.lookupItem(flags[kFLAGS.ANEMONE_WEAPON_ID]);
+			if (item is Weapon || item is Shield) return item.longName;
+			return item.name;
+		}
 		public function kidAXP(diff:Number = 0):Number
 		{
 			if (diff == 0) return flags[kFLAGS.KID_A_XP];
@@ -174,7 +196,8 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 								else outputText("\n\nYour dick is too big for Kid A to do anything with.");
 							}
 							if (player.hasVagina()) sex = true;
-							if (sex) addButton(2, "Sex", kidASex, false);
+							if (sex) addButton(2, "Sex", kidASexMenu, false);
+							else addButton(2, "Masturbation", kidAMasturbation);
 						}
 						else outputText("\n\nYou aren't aroused enough to have sex with her right now.");
 					}
@@ -546,6 +569,18 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 			}
 		}
 
+		public function kidASexMenu():void {
+			menu();
+			if (kidAXP() < 40) addButtonDisabled(0, "Sex", "Kid A isn't self-confident enough to have sex with right now... Perhaps if you could tutor her with a weapon she seems to agree with?");
+			else {
+				addButton(0, "Sex", kidASex, false).hint("She looks up for some fun.").disableIf(!player.hasVagina() && player.cockThatFits(60) < 0, "Your dick is too big for Kid A to do anything with.");
+				addButtonIfTrue(1, "Lovemaking", kidALovemaking, "Need to get in touch with your feminine side", player.hasVagina()).hint("Cuddle with your daughter and focus on her feminine side.");
+			}
+			addButton(2,"Masturbation", kidAMasturbation);
+			addButton(14,"Back", approachAnemoneBarrel);
+		}
+
+
 		private function kidASex(cont:Boolean = true):Boolean
 		{
 			if (!cont) {
@@ -561,12 +596,8 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 				outputText("\n\n");
 				outputText(images.showImage("anemone-kid-male-vagfuck"));
 				outputText("You collapse onto your back, panting your arousal into the dry air.  Shyly at first but with increasing confidence as you fail to react, your daughter slips a hand into your clothes and down to your crotch.  She bites her lip and blushes as her hand reaches the neck of your " + Appearance.cockNoun(player.cocks[x].cockType) + ", then her resolve appears to crystallize as she yanks it free from your [armor]. At first, nothing happens and your erect cock just bobs through the empty air, but then you feel soft fingertips guiding it and a warm, tight squeeze at the end of your dick.  Raising your head in surprise, you see the anemone has mounted you!  She blushes and looks away at the eye contact, but her mouth opens in a sly grin as she begins to shift her hips, sliding your " + cockDescript(x) + " deeper into herself.");
-
-
 				outputText("\n\nShe flushes and winces as you sink into her, breathing heavily as her pussy stretches and her small cock hardens over you.  Gods, it's so tight; as you look your amazement at her, her eyes twinkle.  She takes in the last of your shaft laboriously and then, relaxing, leans forward and plants a kiss on your chest to answer your unspoken question.  The girl was actually saving her first time for you?  You prop yourself up on your elbow and pull her face into yours, giving her a short kiss; she smiles bashfully and then pulls out of your grip to sit upright with her hands on your stomach.");
-
 				outputText("\n\nBeginning to move her hips, she stirs herself with your " + Appearance.cockNoun(player.cocks[x].cockType) + " as she gyrates, loosening herself slightly; you take the opportunity to pull off the top of your [armor] eagerly and she answers you by pushing her cock down onto your skin with a hand, smearing its tentacled crown around with her movement and spreading venomous heat to your torso even as she moans and the tip drools on your stomach.  After two minutes of this teasing, she grins again and raises up, pulling your cock partway out; you tense and shut your eyes in expectation of what's to come, but she just hovers there.  Curiously, you open your eyes again and look at her - which seems to be what she was waiting for.  At the first sign of your guard dropping, her eyes glint suspiciously and she begins riding you in earnest, plunging up and down your cock with her incredibly tight pussy; your sensation-swamped body carries you away and you begin pushing back against her as she descends, so that your groins meet each other in the air.  She gasps and smiles open-mouthed with her head back, removing the hand still on your stomach to fondle her breasts as she fucks you senseless.  At the nadir of every bounce, the feelers on her cock and vagina rub against your exposed skin, delivering a fresh load of anemone venom that pushes you closer to orgasm by leaps and bounds.");
-
 				outputText("\n\nThe girl herself doesn't seem to be faring much better; her left hand is furiously jerking her cock and her right is squeezing her small breasts as she rides, while her mouth hangs open and she makes tiny grunts of pleasure at each stroke.  Predictably, she twitches and sinks down one last time as her pecker spasms and she cries out.  She pushes her little blue shaft down onto your stomach again and rubs it back and forth as she ejaculates on your [chest]; her clenching pussy meanwhile wrings your dick vigorously, sending a shiver down your spine to spark the venom-induced climax that pours from you.  Your hands grasp her hips as your dick empties into the slender blue girl's womb, spitting semen with a furor enhanced by the continuing dose of aphrodisiac from the vaginal feelers stroking its base as she twitches.");
 				//[(big skeet)]
 				if (player.cumQ() >= 1000) outputText("  As you pour into her, the sensation of being stuffed with semen sets off a second orgasm in the quivering girl, and her own prick drools weakly onto your stomach");
@@ -728,42 +759,36 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 
 //dreams: possible once KidXP >= 40; function as visible notice of sex-readiness
 //if KidXP drops below threshold for sex due to bad training, no more dreams and no more sex
-		public function kidADreams():void
-		{
-			outputText("\n<b><u>In the middle of the night...</u></b>");
+		public function kidADreams():void {
+			spriteSelect(SpriteDb.s_kida);
+			outputText("[pg]<b><u>In the middle of the night...</u></b>[pg-]");
 			//if male:
 			if (player.hasCock() && (!player.hasVagina() || player.femininity < 50)) {
-				outputText(images.showImage("anemone-kid-male-masti"));
-				outputText("\nThe church bell chimes overhead as you regard the figure opposite you.  Your family chose this woman and arranged this marriage, true, but it's not fair to say you're not at least a little interested in the svelte, veiled form inhabiting the wedding dress your mother handed down to her.");
-				outputText("\n\nThe pastor coughs politely.  \"<i>Well... do you?  Take this woman?</i>\"");
-
-				outputText("\n\nYou nod absently, still staring at your bride.  The pastor repeats his question to her and she nods as well, staring at you in like fashion.");
-
-				outputText("\n\n\"<i>In that case, I pronounce you man and wife.  You may kiss the bride.</i>\"");
-
-				outputText("\n\nYou raise your hands to lift the veil but your bride captures them shyly, tracing little circles on your palms with her gloved thumbs, and begins to pull you down the aisle toward the doors, provoking a giggle from the assembled witnesses.  She drags you eagerly through the archway and through the streets to the little cottage your parents helped you build in preparation for your new life, only stopping outside.  With one hand on her veil and the other in yours, she pulls close and allows you to lift her in your arms; she is amazingly light as she wraps her arms around your neck, nuzzling your chest happily.  You carry your queer spouse through the house and into the bedroom; as you set her carefully on the bed, running your hands along her body, a small bulge begins to form in her crotch, poking up the folds of the white dress.  Clambering atop her to lift the veil unobstructed, she grinds her crotch into yours and begins moaning softly - you can feel your cock hardening as your affectionate stranger pushes her sex into yours, depositing little smears of her precum that seep through your mother's wedding dress into a growing dark spot.  Taking hold of the veil, you hold your breath and raise it...");
-
-				outputText("\n\nA sapphire face looks back at you.  Through opaque eyes she somehow still manages to express more adoration than you've known most of your life.  Placing a hand alongside your ");
+				images.showImage("anemone-kid-male-masti");
+				outputText("The church bell chimes overhead as you regard the figure opposite you. Your family chose this woman and arranged this marriage, true, but it's not fair to say you're not at least a little interested in the svelte, veiled form inhabiting the wedding dress your mother handed down to her.");
+				outputText("[pg]The pastor coughs politely. [say: Well... do you? Take this woman?]");
+				outputText("[pg]You nod absently, still staring at your bride. The pastor repeats his question to her and she nods as well, staring at you in like fashion.");
+				outputText("[pg][say: In that case, I pronounce you man and wife. You may kiss the bride.]");
+				outputText("[pg]You raise your hands to lift the veil but your bride captures them shyly, tracing little circles on your palms with her gloved thumbs, and begins to pull you down the aisle toward the doors, provoking a giggle from the assembled witnesses. She drags you eagerly through the archway and through the streets to the little cottage your parents helped you build in preparation for your new life, only stopping outside. With one hand on her veil and the other in yours, she pulls close and allows you to lift her in your arms; she is amazingly light as she wraps her arms around your neck, nuzzling your chest happily. You carry your queer spouse through the house and into the bedroom; as you set her carefully on the bed, running your hands along her body, a small bulge begins to form in her crotch, poking up the folds of the white dress. Clambering atop her to lift the veil unobstructed, she grinds her crotch into yours and begins moaning softly - you can feel your cock hardening as your affectionate stranger pushes her sex into yours, depositing little smears of her precum that seep through your mother's wedding dress into a growing dark spot. Taking hold of the veil, you hold your breath and raise it...");
+				outputText("[pg]A sapphire face looks back at you. Through opaque eyes she somehow still manages to express more adoration than you've known most of your life. Placing a hand alongside your ");
 				if (player.isTaur()) outputText("thigh");
 				else outputText("cheek");
-				outputText(", she leans in to kiss you, softly whispering your name over and over.  \"<i>[name]... [name]...</i>\"");
-
-				outputText("\n\nYour eyes snap open suddenly to see the ubiquitous red moon overhead.  A ");
+				outputText(", she leans in to kiss you, softly whispering your name over and over. [say: [name]... [name]...]");
+				outputText("[pg]Your eyes snap open suddenly to see the ubiquitous red moon overhead. A ");
 				if (!player.isTaur()) outputText("soft hand strokes your face and a ");
 				outputText("slight weight rests against your crotch; as you look down, your anemone is there with her pussy pressed to the erection bulging under your gear, frozen in mid-rub and blushing to the point that you can barely make her out.");
-
-				outputText("\n\n\"<i>Um... hi?</i>\"  She slowly backs away into the night, leaving you to try to sleep with your awakened libido.");
+				outputText("[pg][say: Um... hi?] She slowly backs away into the night, leaving you to try to sleep with your awakened libido.");
 			}
 			//if female:
 			else {
-				outputText(images.showImage("anemone-kid-female-masti"));
-				outputText("\nThe elder's son must be behind the schoolhouse again.  You've noticed him going back there several days this week.  Quietly, you slip from behind your desk and exit the little two-room school.  Sure, he might be old enough to be working the fields by now, but that's no excuse to slack off during his final studies.");
-				outputText("\n\nAs you draw up to the corner, you can hear his voice raised in soft, girlish gasps.  Peering around carefully, you find him sitting on the ground with his shoulder to the wall, turned away from you; over that shoulder, the little blue head of his cock is clearly visible above his clenched fist.  He continues jerking off, unaware of your presence, and as you look on, you marvel at how much thinner and more feminine this hunched figure compared to the dashing, popular boy from your memory.");
-				outputText("\n\n\"<i>[name]!</i>\" he peals suddenly, stroking with vigor at his thoughts of you.  Startled and perhaps a bit flattered, you take a half-step back, and the noise brings his attention around.  In surprise, he half-turns and half-falls to face you, wide opaque eyes looking out of an alarmingly blue face in shock as his little dick twitches and spurts a string of goo toward your lap.");
-				outputText("\n\nThe bizarre sight of your classmate turned sapphire wakes you, and you sit up suddenly.  Blinking twice, you look to your left to discover your anemone, weakly stroking her deflating cock and sighing in satisfaction.  As her eyes catch yours, she freezes up; a wet smell draws your attention downward to where a line of semen decorates your thigh.  The blue girl blushes furiously");
+				images.showImage("anemone-kid-female-masti");
+				outputText("The elder's son must be behind the schoolhouse again. You've noticed him going back there several days this week. Quietly, you slip from behind your desk and exit the little two-room school. Sure, he might be old enough to be working the fields by now, but that's no excuse to slack off during his final studies.");
+				outputText("[pg]As you draw up to the corner, you can hear his voice raised in soft, girlish gasps. Peering around carefully, you find him sitting on the ground with his shoulder to the wall, turned away from you; over that shoulder, the little blue head of his cock is clearly visible above his clenched fist. He continues jerking off, unaware of your presence, and as you look on, you marvel at how much thinner and more feminine this hunched figure compared to the dashing, popular boy from your memory.");
+				outputText("[pg][say: [name]!] he peals suddenly, stroking with vigor at his thoughts of you. Startled and perhaps a bit flattered, you take a half-step back, and the noise brings his attention around. In surprise, he half-turns and half-falls to face you, wide opaque eyes looking out of an alarmingly blue face in shock as his little dick twitches and spurts a string of goo toward your lap.");
+				outputText("[pg]The bizarre sight of your classmate turned sapphire wakes you, and you sit up suddenly. Blinking twice, you look to your left to discover your anemone, weakly stroking her deflating cock and sighing in satisfaction. As her eyes catch yours, she freezes up; a wet smell draws your attention downward to where a line of semen decorates your thigh. The blue girl blushes furiously");
 				if (player.cor >= 66) outputText(" and, with a sigh, you grab her head and force it down to the mess, compelling her to lick it up.");
 				else outputText(" and neither of you says a word as she backs away slowly on her knees.");
-				outputText("  Sighing, you turn over and attempt to return to sleep despite the pervading smell of semen.");
+				outputText(" Sighing, you turn over and attempt to return to sleep despite the pervading smell of semen.");
 			}
 			dynStats("lus", 50 + player.sens / 2, "scale", false);
 			doNext(playerMenu);
@@ -772,42 +797,42 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 //Kid-and-kid interaction scenes:
 //Cows one-time scene(plays the first time Kidswag > 0, Kidweapon is populated, and PC has 5+ delicious well-Marbled steak children)
 //set Kidsitter flag = 1; 'unlocks' repeat babysitting, making Kid A unavailable with a 25% chance during daylight hours
-		public function kidABabysitsCows():void
-		{
-			outputText("\n<b>\"<i>Come on, get out of your little hole and help!</i>\"</b>");
-			outputText("\n\nThe sound of a voice being raised in frustration turns your head.  Marble is standing in front of your occupied water barrel with several of your rambunctious children in tow, berating the anemone cornered inside.  You advance a few feet and the blue girl turns toward you beseechingly, but Marble starts talking again before you're close enough to say anything.");
-
-			outputText("\n\n\"<i>...no idea why you're so shy and immature,</i>\" the cow-girl continues, no less insistent for her quieter tone.  \"<i>You're almost two feet taller than any of these kids, so why don't you stop acting like one and behave like an adult?  There's work to be done around here and not enough hands to do it!</i>\"");
-
-			outputText("\n\nMarble takes a horse-stance, awaiting an answer; the anemone considers unhappily for several minutes, then climbs out of the barrel.  Satisfied, Marble turns and herds her children off.  Kid A initially plods along in her wake, but after a moment's consideration, returns to the barrel and grabs her " + ItemType.lookupItem(flags[kFLAGS.ANEMONE_WEAPON_ID]).longName + " before reluctantly joining the others in the open pasture.");
-
-			outputText("\n\n\"<i>Alright,</i>\" Marble says, as the anemone draws up to her from the rear.  The larger woman turns to face the blue girl.  \"<i>You're going to watch these kids while I sit here and patch some holes in their... why did you bring that to babysit?!</i>\"");
-
-			outputText("\n\nThe anemone holds her armament closer to her chest and points at the cow-girl's ever-present hammer.");
-
-			outputText("\n\n\"<i>That's different!  I need my weapon if some horde of monsters invades my home and accosts me!</i>\" Marble exclaims.  Kid A pauses in thought, glances at the unruly brood, then nods in careful agreement.");
-
-			outputText("\n\nHuffing, Marble seats herself on a flat stone and removes some torn childrens' clothing from a pouch, along with a crude needle and some sinew.  \"<i>Whatever.  Don't bring it next time.</i>\"  She turns to her assembled rabble as the anemone absorbs the implications of 'next time'.");
-
-			outputText("\n\n\"<i>The blue barbarian here will take care of you while I sew up your overalls.  You behave, now.</i>\"  No sooner is the admonition out than one cow kid grabs the anemone by the hand and pulls her away, good behavior clearly the furthest thing from mind.\n");
-			flags[kFLAGS.KID_SITTER] = 1;
+		public function kidABabysitsCows():void {
+			spriteSelect(SpriteDb.s_kida);
+			outputText("<b>[say: Come on, get out of your little hole and help!]</b>");
+			outputText("[pg]The sound of a voice being raised in frustration turns your head. Marble is standing in front of your occupied water barrel with several of your rambunctious children in tow, berating the anemone cornered inside. You advance a few feet and the blue girl turns toward you beseechingly, but Marble starts talking again before you're close enough to say anything.");
+			outputText("[pg][say: ...no idea why you're so shy and immature,] the cow-girl continues, no less insistent for her quieter tone. [say: You're almost two feet taller than any of these kids, so why don't you stop acting like one and behave like an adult? There's work to be done around here and not enough hands to do it!]");
+			outputText("[pg]Marble takes a horse-stance, awaiting an answer; the anemone considers unhappily for several moments, then climbs out of the barrel. Satisfied, Marble turns and herds her children off. ");
+			if (kidAXP() >= 66) {
+				outputText("However, it's only a few steps before she realizes that Kid A isn't budging. The cow-girl turns back around with an icy glare, and the absolute silence that overtakes the scene is actually a bit unnerving. You're not quite sure what the little anemone is thinking, but there's not a shred of uncertainty in her expression. The two stare at each other.");
+				outputText("[pg][say:Do you even understand me? I said—]");
+				outputText("[pg]A whirl of glowing tendrils whips around as Kid A vigorously shakes her head back and forth. Her arms cross over her petite chest, and she takes a stance to match Marble's as the cow-girl looks on incredulously. You take pride in how firmly her feet are planted in the earth, a clear-cut statement that she's not going to be a pushover today. She wouldn't always have been able to stand up for herself here, you know well, and that only makes you all the prouder.");
+				outputText("[pg][say:...Fine. Whatever. Another thing to handle myself.] Marble turns to her children and starts speaking in a much sweeter tone, though you can clearly hear the agitation underneath. [say:Mommy's going to teach you some sewing now—won't that be fun?]");
+				outputText("[pg]Her children grumble in response. As the cow-girl reluctantly retreats, you head over to the barrel to praise your daughter for her courage. Kid A beams at you as you lavish her with compliments, and the tentacles on her head glow as bright as her smile. When you're finished, she lurches forward, almost stumbling over her own feet but recovering gracefully before pulling you into a hug.");
+				outputText("[pg]The embrace is short-lived, but you take heart in the fact that the warm feeling in your chest won't be as you wave goodbye to the anemone-girl.");
+				flags[kFLAGS.KID_SITTER] = -1;
+			}
+			else {
+				outputText("Kid A initially plods along in her wake, but after a moment's consideration, returns to the barrel and grabs her " + weaponName() + " before reluctantly joining the others in the open pasture.");
+				outputText("[pg][say: Alright,] Marble says, as the anemone draws up to her from the rear. The larger woman turns to face the blue girl. [say: You're going to watch these kids while I sit here and patch some holes in their... why did you bring that to babysit?!]");
+				outputText("[pg]The anemone holds her armament closer to her chest and points at the cow-girl's ever-present hammer.");
+				outputText("[pg][say: That's different! I need my weapon if some horde of monsters invades my home and accosts me!] Marble exclaims. Kid A pauses in thought, glances at the unruly brood, then nods in careful agreement.");
+				outputText("[pg]Huffing, Marble seats herself on a flat stone and removes some torn children's clothing from a pouch, along with a crude needle and some sinew. [say: Whatever. Don't bring it next time.] She turns to her assembled rabble as the anemone absorbs the implications of 'next time'.");
+				outputText("[pg][say: The blue barbarian here will take care of you while I sew up your overalls. You behave, now.] No sooner is the admonition out than one cow kid grabs the anemone by the hand and pulls her away, good behavior clearly the furthest thing from mind.[pg]");
+				flags[kFLAGS.KID_SITTER] = 1;
+			}
 		}
 
 //Cow repeat
 //triggered when PC selects the Kids option in Marble menu while Kid A is babysitting
-		public function repeatCowSitting():void
-		{
-			outputText("Marble looks up from her work and regards you warmly.  \"<i>I appreciate the offer, [name].  I've already got someone on it, but if you want to go help, I'm sure there's something you could do.</i>\"  She gestures in a direction over your shoulder.");
-
-			outputText("\n\nTurning that way, you walk along her line of sight to discover your brood, who are currently tormenting your anemone.  Kid A is trying to keep one from throwing small rocks at another, while a third is following her, tugging on her hand and constantly begging her to read a tattered book aloud.  Seeing the most obvious way to help out the nearly-mute anemone, you intercept this last kid, taking her hand and steering her away.  Kid A manages a glance at you before her attention is pulled back to the hellion with the stones.");
-
-			outputText("\n\nThe picture book is old and, judging by the little canid hero in the faded illustrations, probably belonged to Whitney once before it was graciously donated to your family.  You go through the tale, mustering suspense and amazement where appropriate; judging by the not-quite-shocked reaction from your daughter, she's heard this story several times already.  Nonetheless, she demands you read it again when you finish, and you do so, doubling the emotion you put into the words; your daughter giggles and shrieks when you pretend to be the storybook monster and flip her upside-down, blowing a raspberry on her tummy under the pretext of taking a bite out of her with your 'gnashing fangs'.");
-
-			outputText("\n\nIt's not long before Marble comes to find you.  \"<i>I'm all done with my chores.  Have you been behaving for [name]?</i>\"");
-
-			outputText("\n\n\"<i>Yes, mummy,</i>\" your daughter answers.  \"<i>I let " + player.mf("him", "her") + " eat me right up.</i>\"  Laughing, Marble leads the little girl off and you make your way back.  Kid A is dragging herself to her water barrel, looking at the ground in a frazzle.  As you pass by, she makes unblinking eye contact for a long time, then eventually acknowledges you with a curt nod.");
-
-			outputText("\n\n\"<i>...Sweetie.</i>\"");
+		public function repeatCowSitting():void {
+			spriteSelect(SpriteDb.s_kida);
+			outputText("Marble looks up from her work and regards you warmly. [say: I appreciate the offer, [name]. I've already got someone on it, but if you want to go help, I'm sure there's something you could do.] She gestures in a direction over your shoulder.");
+			outputText("[pg]Turning that way, you walk along her line of sight to discover your brood, who are currently tormenting your anemone. Kid A is trying to keep one from throwing small rocks at another, while a third is following her, tugging on her hand and constantly begging her to read a tattered book aloud. Seeing the most obvious way to help out the nearly-mute anemone, you intercept this last kid, taking her hand and steering her away. Kid A manages a glance at you before her attention is pulled back to the hellion with the stones.");
+			outputText("[pg]The picture book is old and, judging by the little canid hero in the faded illustrations, probably belonged to Whitney once before it was graciously donated to your family. You go through the tale, mustering suspense and amazement where appropriate; judging by the not-quite-shocked reaction from your daughter, she's heard this story several times already. Nonetheless, she demands you read it again when you finish, and you do so, doubling the emotion you put into the words; your daughter giggles and shrieks when you pretend to be the storybook monster and flip her upside-down, blowing a raspberry on her tummy under the pretext of taking a bite out of her with your 'gnashing fangs'.");
+			outputText("[pg]It's not long before Marble comes to find you. [say: I'm all done with my chores. Have you been behaving for [name]?]");
+			outputText("[pg][say: Yes, mummy,] your daughter answers. [say: I let [him] eat me right up.] Laughing, Marble leads the little girl off and you make your way back. Kid A is dragging herself to her water barrel, looking at the ground in a frazzle. As you pass by, she makes unblinking eye contact for a long time, then eventually acknowledges you with a curt nod.");
+			outputText("[pg][say: ...Sweetie.]");
 		}
 
 
@@ -840,29 +865,94 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 //goblins at night:
 //req PC cocks > 0, Kid A watch on, and Tamani daughters encounter unlocked
 //repeatable for now, but semi-rare
-		public function goblinNightAnemone():void
-		{
-			outputText("\n<b>That night...</b>");
-			outputText("\nA noisy clump of gabbling green in the distance awakens you and attracts your attention.  As it draws closer to your camp, you can make out tufts of shockingly-colored hair atop it, and then distinct shapes.  The blot on the landscape resolves into a glob of goblins, clearly intent on reaching your camp's perimeter.  Your anemone notices as well, and, attempting to fulfill the terms of her lease, picks up her " + ItemType.lookupItem(flags[kFLAGS.ANEMONE_WEAPON_ID]).longName + " and moves to intercept them.  You follow at a good distance and tuck yourself behind some cover, already suspecting the identities of the invaders.");
-
-			outputText("\n\nThe goblins slow up and then stop as the anemone plants herself in their way.  The two sides size one another up for a minute, and then the glob parts to reveal its largest member.");
-
-			outputText("\n\n\"<i>Move it, blue bitch,</i>\" she demands.  \"<i>Tammi said to keep watch for a ");
+		public function goblinNightAnemone():void {
+			spriteSelect(SpriteDb.s_kida);
+			outputText("<b>That night...</b>");
+			outputText("[pg]A noisy clump of gabbling green in the distance awakens you and attracts your attention. As it draws closer to your camp, you can make out tufts of shockingly-colored hair atop it, and then distinct shapes. The blot on the landscape resolves into a glob of goblins, clearly intent on reaching your camp's perimeter. Your anemone notices as well, and, attempting to fulfill the terms of her lease, picks up her " + weaponName() + " and moves to intercept them. You follow at a good distance and tuck yourself behind some cover, already suspecting the identities of the invaders.");
+			outputText("[pg]The goblins slow up and then stop as the anemone plants herself in their way. The two sides size one another up for a minute, and then the glob parts to reveal its largest member.");
+			outputText("[pg][say: Move it, blue bitch,] she demands. [saystart]Tammi said to keep watch for a ");
 			if (player.tallness > 48) outputText("tall");
 			else outputText("short");
-			outputText(", " + player.mf("studly", "gorgeous") + " [race]; told us that " + player.mf("he", "she") + "'d be able to knock us all up like " + player.mf("he", "she") + " did her, and a few of the little goblin tramps outside the family have seen one in this camp.  We're going to get our babies.</i>\"  Kid A remains silent, but shakes her head uncertainly, holding her equipment closer to her chest.");
+			outputText(", " + player.mf("studly", "gorgeous") + " [race]; told us that [he]'d be able to knock us all up like [he] did her, and a few of the little goblin tramps outside the family have seen one in this camp. We're going to get our babies.[sayend] Kid A remains silent, but shakes her head uncertainly, holding her equipment closer to her chest.");
+			outputText("[pg]The goblin looks a little surprised. [say: What do you mean, getting in our way? I'll warn you once; step aside and let us search that camp for baby batter, or I will make you regret it.] She considers the anemone irately, then gestures to her entourage and adds, [say: I'd have these cunts ride your sad little willy silly to punish you for being such a slag, but we can't get goblins out of you people - only more blue bitches.]");
+			outputText("[pg]Though you can't see Kid A's expression from behind, she's probably steeling her face into as stern a mask as she's capable of, judging by the way she assumes an aggressive stance - albeit one that's still trying to protect her body as much as possible with " + weaponNameLong() + ". As the anemone takes a step forward, the goblins all take a step back, except for the leader. The two are now staring at each other; one looking up, the other down.");
+			outputText("[pg][say: Well, we got a blue badass here,] the goblin says, raising her hands in a gesture of mock wariness. Before anyone can react, she reaches behind her back and grabs a phial fastened there, throwing it overhand at the anemone with a grunt. It crashes into Kid A's shoulder and shatters, dousing one gill and the side of her chest in green liquid. The blue girl glances down at it as the goblin laughs in triumph.");
+			outputText("[pg][say: How do you like that, you... you... you don't feel sick? Like, at all?] The goblin spokeswoman is taken briefly aback as the anemone carefully brushes the glass shards from her skin, apparently none the worse for her poisoning. Kid A looks up again, resuming her staring match with the goblin, and the glob fans out into a wary half-circle behind her, giving the two a wide berth.");
+			outputText("[pg][say: Listen, missy,] the lone goblin continues, visibly shaken. [say: Get out of the way now or... or I'll... f-fuckin' punch your shit!] The goblin draws back an obvious haymaker and, when her opponent doesn't move, lets fly right into Kid A, who takes it in the stomach with what is probably wide-eyed curiosity. The goblin's fist pulls back and her eyes bug out as the anemone's elastic cuticle rebounds into shape; almost in unison, the glob takes another step backward. Kid A looks up again and the spokesgoblin stammers as she backpedals.");
+			outputText("[pg][say: Don't think this is over, you blue freak!] she shouts, turning away. [say: We'll be back! Let's go, you greedy bitches.] With much grumbling, the glob forms up around her and begins to move off. Kid A watches them go for a while, then turns back to you, her face the picture of confusion. You smile gratefully and head back to bed.[pg]");
+		}
 
-			outputText("\n\nThe goblin looks a little surprised.  \"<i>What do you mean, getting in our way?  I'll warn you once; step aside and let us search that camp for baby batter, or I will make you regret it.</i>\"  She considers the anemone irately, then gestures to her entourage and adds, \"<i>I'd have these cunts ride your sad little willy silly to punish you for being such a slag, but we can't get goblins out of you people - only more blue bitches.</i>\"");
+		public function kidAMasturbation():void {
+		//See submissions archive for variations if Kid A dedicking ever happens
+		clearOutput();
+		spriteSelect(SpriteDb.s_kida);
+		outputText("You call the anemone out of her barrel. Aware of her more sensual needs, you decide to help her masturbate.");
+		outputText("[pg]Kid A blushes deeply at your idea, holding her crotch nervously; however, her efforts do little to conceal her stiffening member. Shy as she may be, she seems eager to find out what you have in store for her. You assure the little anemone that she has nothing to be anxious about as you slip your hand between hers, rubbing her shaft. She tenses up at the contact, shaking as she submits and allows you to do what you will.");
+		if (kidAXP() < 33) {
+			outputText("[pg]You slide your hand further along, pressing down on her labia as you get lower. Your daughter, completely overwhelmed by the whole experience, shudders and orgasms on the spot, falling over in the process. Utterly consumed by embarrassment, she clumsily sprints back to her barrel, crawling inside to hide her shame. Any attempt to ease her seem to fall on deaf ears. You sigh and walk away.");
+			dynStats("lus", 5);
+			kidAXP(1);
+			doNext(camp.returnToCampUseOneHour);
+			return;
+		}
+		outputText("[pg]You explain to your little blue daughter that masturbation is healthy for a growing girl. She should understand and feel comfortable with giving herself pleasure. You sit her down on your [legs] and rub your fingers gently on her labia. She gasps and tries covering up again on reflex, but you do not slow down. Her puffy cerulean vulva heats up quickly under such stimulation, but this alone isn't enough for the anemone. You slide your thumb up against the base of her cock, where it meets her pussy, eliciting a loud yelp from her.");
+		outputText("[pg]Trembling, Kid A mutters little more than [say: A-ah... Ah...] as she experiences the expert touch of her [father]. You twirl your thumb around, familiarizing her with these sensations, before dragging it slowly down between her lips. Her warm and fleshy valley is drenched at this point. At the bottom of her tender basin, her vaginal entrance quivers expectantly. You tease and prod the hole, rubbing around it. Your daughter tilts her head back and moans, grinding her hips forward out of instinct. Now it's her turn.");
+		outputText("[pg]Kid A doesn't react immediately. The lack of stimulus soon catches up with her, however, and she begins to pay attention once more. It's her turn to rub herself and demonstrate what she learned. The anemone's eyes go wide, but you've worked her up far too much for her to succumb to anxiety. She needs release, even if that means masturbating in front of her [dad]. Although not without much hesitation, she obliges and starts to rub her pussy. Her fingers first lay flat against her vulva, rubbing with no particular technique. Soon, however, she seeks stronger stimulus by sliding her fingertips up to the hilt between her pussy and cock, achieving the electrifying stimulation you had given her earlier.");
+		outputText("[pg]Wincing, Kid A grinds her fingers harder and faster, unconsciously beginning to rub her thighs together as well. As expected, she lets loose loud pants and moans, reaching orgasmic bliss. You hug the shuddering anemone lovingly, soon lifting her up to place in her barrel to avoid her dehydrating while she rests.");
+		dynStats("lus", 15);
+		kidAXP(5);
+		doNext(camp.returnToCampUseOneHour);
+		}
 
-			outputText("\n\nThough you can't see Kid A's expression from behind, she's probably steeling her face into as stern a mask as she's capable of, judging by the way she assumes an aggressive stance - albeit one that's still trying to protect her body as much as possible with " + ItemType.lookupItem(flags[kFLAGS.ANEMONE_WEAPON_ID]).longName + ".  As the anemone takes a step forward, the goblins all take a step back, except for the leader.  The two are now staring at each other; one looking up, the other down.");
-
-			outputText("\n\n\"<i>Well, we got a blue badass here,</i>\" the goblin says, raising her hands in a gesture of mock wariness.  Before anyone can react, she reaches behind her back and grabs a phial fastened there, throwing it overhand at the anemone with a grunt.  It crashes into Kid A's shoulder and shatters, dousing one gill and the side of her chest in green liquid.  The blue girl glances down at it as the goblin laughs in triumph.");
-
-			outputText("\n\n\"<i>How do you like that, you... you... you don't feel sick?  Like, at all?</i>\"  The goblin spokeswoman is taken briefly aback as the anemone carefully brushes the glass shards from her skin, apparently none the worse for her poisoning.  Kid A looks up again, resuming her staring match with the goblin, and the glob fans out into a wary half-circle behind her, giving the two a wide berth.");
-
-			outputText("\n\n\"<i>Listen, missy,</i>\" the lone goblin continues, visibly shaken.  \"<i>Get out of the way now or... or I'll... f-fuckin' punch your shit!</i>\"  The goblin draws back an obvious haymaker and, when her opponent doesn't move, lets fly right into Kid A, who takes it in the stomach with what is probably wide-eyed curiosity.  The goblin's fist pulls back and her eyes bug out as the anemone's elastic cuticle rebounds into shape; almost in unison, the glob takes another step backward.  Kid A looks up again and the spokesgoblin stammers as she backpedals.");
-
-			outputText("\n\n\"<i>Don't think this is over, you blue freak!</i>\" she shouts, turning away.  \"<i>We'll be back!  Let's go, you greedy bitches.</i>\"  With much grumbling, the glob forms up around her and begins to move off.  Kid A watches them go for a while, then turns back to you, her face the picture of confusion.  You smile gratefully and head back to bed.\n");
+		public function kidALovemaking():void {
+			clearOutput();
+			outputText("A curious smile forms on your anemone daughter's face as you [if (singleleg) {move|step}] closer to her barrel, and her complexion only grows more brilliant once you rest your arm atop the rim. She [if (kidaxp > 66) {looks|sneaks glances}] [if (tallness > 70) {up at|[if (tallness < 60) {down at|[if (kidaxp > 66) {straight at|towards}]}]}] you, though, and you've no doubt [if (cor > 50) {she knows what you want|the two of you have the same idea in mind}]. " + (player.cor > 50 || player.lib > 50 ? "With a [father] like you" : "Considering her diet") + ", it's almost instinctual, after all.");
+			outputText("[pg]Her eyes follow the lazy drift of your finger through the water, and each brush against her vibrant blue skin leaves her trembling once you slip away. Despite her usual [if (kidaxp > 66) {confidence|curiosity}], she merely leans back, seemingly content to watch your hand dip beneath the surface and trace along the feathers of her gills. That's fine, of course. [if (lust > 50) {You can hold out a little longer|You're in no rush}], and you're more than happy to give your daughter all the affection she needs.");
+			outputText("[pg]You start off light, following the gentle contours of her body, and the only sound comes from your hand climbing out of the water and trailing droplets across her skin. She doesn't seem to mind the quiet, as you're well aware, and her eyes follow your path as you work your way upward, only glancing away when you glide across her shoulder and slip out of sight. You linger there, letting her delicate hair sting your fingers until warmth [if (lust > 50) {rages|blossoms}] beneath your [skinshort]. With her venom seeping into you, the sharp contrast of her cool skin against the heat of your palm comes as even more of a surprise, though no matter how deliberate you make your touch, she still seems a bit [if (kidaxp > 66) {confused|unsure}]. That just won't do, and you take a moment to guide her closer, delighted at the tiny gasp that slips out her when you pull her to the rim. Her murky eyes flit shyly up to your own as she senses your building desire, but you can't mistake the hunger swirling inside.");
+			outputText("[pg][if (isday) {Sunlight glitters across every inch of her skin that peeks above the surface|The reddish light of the moon paints her a rich purple}], lending her an elegance that seems almost at odds with her usual self. Her [if (kidaxp > 66) {eager|nervous}] nod comes as no surprise, and her entire body trembles as you lead her hand to your [if (isgoo) {neck|collarbone}] and let her fingers trail down your [if (isnakedupper) {bare}] chest. [if (!isnakedupper) {Even through your [armor], the anticipation of h|H}]er delicate touch sends shivers across your sensitive [skinshort], each one making your daughter grow bolder. A fuzzy tingle brushes your cheek as she leans closer, her venom-laced hair immediately turning your face [if (hasscales || isgoo) {hot|flushed}][if (isfluffy) { beneath your [skindesc]}].");
+			outputText("[pg]Your [if (isgoo) {desire|heart}] pounds in your [if (isgoo) {head|skull}] at their sting, and it's hard to concentrate on much more than your daughter's lips, now only inches from your own. Their striking blue color catches your eye, and if she came any closer, you [if (lib > 50) {know you couldn't|don't think you could}] hold back. Maybe she knows, and that's why she stays just out of reach, waiting for her [father] to take the last step. It would be entirely your fault if anything happened, after all, and she seems content to let this choice rest on you.");
+			outputText("[pg]How could you not? Her lips already glisten with water, beckoning you with an irresistible invitation, and she quivers as soon as you shift forward, unable to hide her own excitement. Even her eyes drift shut when the warmth of your breath hits her cool skin, but that only makes you want to tease her more. Teaching her the value of patience is your [paternal] duty, and you can hardly think of a lesson she'd enjoy more.");
+			outputText("[pg]Your [if (isnaked) {body flares up again|[armor] seems to grow a bit more stuffy}] when you brush a strand of hair from her face. You're not sure how much more of this you can take, judging by the [if (vaginalwetness > 2) {wetness|heat}] pooling between your thighs, but you do your best to push that thought aside as your lips glide gently across hers. It's light enough to make her giggle in surprise, and seeing your daughter so [if (kidaxp > 66) {caught off-guard|shy}] makes her all the more delicious when you press in and claim her for yourself.");
+			outputText("[pg]She seems a little stunned, so you give her a chance to [if (kidaxp > 66) {compose herself|relax}] while you pepper her cheek with kisses. Her blue skin deepens with each one, and she's almost as dark as the sea by the time you ghost across her mouth once more. [if (cor < 50) {Even though she's your own child, e|E}]verything feels right when your lips meet hers again and her hands [if (isnaked) {dig into your [skin]|cling to your [armor]}], never wanting you to go. Between the sweetness of her taste and the dull throb of her venom in your [if (isgoo) {core|veins}], you could savor her all [day], sharing your passion for your daughter with her in the best way you know.");
+			outputText("[pg]When you do pull back, her eyes are clouded with desire, and she's practically wrapped herself around you trying to climb out of the barrel. Her slender body is [if (str < 50) {surprisingly }]light in your arms, and a shiver runs through you as water drips off her skin and runs down your [if (hasplainskin) {own|[skindesc]}]. Though she's too high up for a proper kiss, she's at just the right height for you to lean in and press your lips to the softness of her stomach. The little anemone squirms delightfully in your grip as you trace your way up, and it's impossible to miss the quiet sounds that slip out of her once you reach the gentle rise of her breasts. Her gills brush against your nose as you go higher still, and she clings to you even tighter when the warmth of your tongue glides across her nipple.");
+			outputText("[pg]Since she has little heat of her own, your every touch must be amplified many times over, and that thought gives you plenty of ideas. You're not [if (isday) {sure how long she can stay out in the sun|keen on being caught by surprise in the dark}], though, so you carry her over to the front of your [cabin] and set her down. Your daughter's eyes widen as you throw open the [if (builtcabin) {door|flap}], and you've no doubt your curious little girl would want to poke around were it not for the dusky blue rising to her cheeks and the fact that there's more than just water dotting her thighs.");
+			outputText("[pg]Instead, she [if (kidaxp > 66) {smiles|shyly glances away}] when you scoop her back up into your arms and [if (singleleg) {enter|step}] inside, her hair setting your [if (isgoo) {senses|nerves}] alight as she relaxes in your hold. The entire journey to your [bed] seems like little more than a hot, breathless blur, and you can't be bothered to care about keeping the bedsheets dry as you lay her down[if (!isnaked) {, letting your [armor] " + (["Light", "Adornment"].indexOf(player.armor.perk) > -1 ? "flutter" : "clatter") + " to the ground a moment later}].");
+			doNext(kidALovemaking2);
+		}
+		public function kidALovemaking2():void {
+			clearOutput();
+			outputText("[if (builtbed) {You climb in beside her, entwining|There's barely enough room for the two of you, but you have all the space you need to entwine}] her fingers with your own as you take in the intoxicating scent of her venom. Your pulse thrums faster with every breath, and as slim as she is, it's effortless to lean in until your lips brush across her chest. The first kiss to her soft, smooth skin sends a shiver through her entire body, and seeing your daughter so desperate for her [father]'s touch sparks a fire deep within your core. Right now, you need her more than anything, no matter [if (cor < 50) {if it's wrong|what anyone else thinks}].");
+			outputText("[pg]Her hands slip from your own and wrap around your back, holding you close enough that her gills tickle your [chest]. The feathery sensation soon has you both in [if (ischild || isteen) {giggles|laughter}], only finally fading away when you pop up to catch your breath. Any doubts you might have had vanish at the sight of her curious smile, and she can barely stay still as you find her mouth again. With all her venom coursing through you, even the gentlest contact leaves your [skinshort] tingling with desire, and your mind quickly fogs over as she presses into you and deepens the kiss.");
+			outputText("[pg]Even though she lacks experience, the cool caress of her tongue still meets your own with a breathtaking contrast, and as odd as it seems, you'd swear you can taste the lake on her lips. Your daughter grows more [if (kidaxp > 66) {passionate|confident}] with each passing moment, her hands soon slipping further down your [skindesc] until her fingertips brush against your [ass]. The contact [if (kidaxp > 66) {gives her pause|makes her momentarily tense up}], but you won't let her worry, not slowing down your efforts until she relaxes into the kiss. Only when she grips you harder and grabs your cheeks between her soft, hesitant fingers do you break away from her lips, and her unfocused eyes seem to stare right through you as you trace your way down to her neck.");
+			outputText("[pg]With each squeeze, you sink lower and reward her with another kiss, and she squirms with delight as you brush aside her gills and take her nipple into your mouth as you start to suckle. With her unique anatomy, you don't have to hide your love, and her hands clench down in surprise when your [if (hasfangs) {fangs brush|teeth scrape}] lightly against her sensitive skin. Her response makes your [if (isgoo) {mind sink deeper into your lust|blood surge faster}], but you somehow find enough control to pause and make sure she's okay. You wouldn't want to frighten her, after all, and as [if (kidaxp > 66) {quiet|shy}] as she is, it's hard to know exactly what she thinks.");
+			outputText("[pg]A firm press of her knee to your [vagina] serves as answer enough, sending aftershocks [if (isgoo) {racing throughout your body|running up your spine}] as you moan into her neck, your hands digging into her back. With the aphrodisiacs flooding your system, even the smallest shift of her thigh winds you tighter and tighter, and the scent of the lakeshore fills your nose as you bury yourself in her soft skin. It's hard to [if (cor < 40) {believe what your daughter's touch does to you|get enough of your daughter's touch}], especially when her fingers grip around your [ass] and hold you tight against her.");
+			outputText("[pg]You doubt the [if (builtcabin) {walls|tent}] can contain the slick, frantic sounds of her thrusts, but the heavy haze coating your mind washes out all thoughts of what [if (camppop > 1) {your camp|anyone nearby}] might think. Nothing else matters besides the anemone beside you and the tension curling in your gut, and your breath catches in your throat every time her hair brushes across your cheek. Compared to her, you're practically burning up, [if (isgoo) {with no relief in sight|sweat already [if (hashair) {matting your hair|beading on your forehead}]}] as you drive yourself closer to the edge.");
+			outputText("[pg]With single-minded purpose, you wrap your arms around her and nuzzle into her neck, letting the world fade away to the brilliant blue of her skin. She trembles alongside you every time your ragged breath flutters across her throat, and your eyes soon drift shut, unable to take any more stimulation. Every inch of you feels stretched so tight you might snap, and your cries vanish into her shoulder as you mash yourself against her one last time. You cling harder to your daughter as fiery warmth crashes over you and rolls [if (isgoo) {all the way down to your base|down your spine}]. A gasp slips out of you as she continues to rock into your [vagina], your arousal already [if (vaginalwetness > 2) {running down|smeared across}] her knee. Your thighs clench around her with every press against your [clit], desperate to keep her close, and it's only when your breathing eventually slows that she slides [if (singleleg) {away|out from between your legs}].");
+			outputText("[pg]Despite the pleasure still pulsing beneath your surface, even the brush of her skin against [if (hasplainskin) {yours|your [skindesc]}] sends shudders through your core, the venom in your [if (isgoo) {body|blood}] flaring up again at her touch. No matter what you do, [if (isgoo) {her every subtle shift|every beat of your heart}] has you craving more. Your mind already races with newfound desire, and you find yourself unable to calm down. You can barely breathe in this suffocating heat as her hands slide higher up your back, but no matter how much you need her, even pushing yourself up to her lips feels like an impossible task. Fortunately, your daughter comes to your aid, and you put up no resistance as she slips out of your arms and rolls you gently onto your back. Her [if (kidaxp > 66) {gaze quickly|shy glance slowly}] shifts to a half-lidded hunger as she stands behind you, leaning down until your head swirls with anticipation at the touch of a palm to your chest.");
+			player.dynStats("lus", 30, "scale", false);
+			doNext(kidALovemaking3);
+		}
+		public function kidALovemaking3():void {
+			clearOutput();
+			outputText("A blue blur settles in front of your vision as she lowers herself to your lips, and you instinctively latch on to her legs with newfound strength, digging your [claws] into her skin. The sharp sting makes her jump in surprise, the perfect opportunity to pull the little anemone close enough that she shivers with your every shaky breath. Her wetness trickles down to your hand, and the scent alone is enough to cloud your thoughts. Nothing less than tasting her directly could possibly satisfy you now, but you content yourself with tracing your tongue along the softness of her thigh, never quite reaching as high as she'd like.");
+			outputText("[pg]Though she tries to press down and cover the distance, you hold her steady, drawing out her desperation a bit longer. Seeing your usually hesitant daughter so eager is a worthwhile reward, after all, especially when she can't help herself from tensing at the slightest parting of your lips. That's not quite what you had in mind, though, and all you give her is a gentle breath across her feelers, your body thrumming with excitement as the feathery tendrils stretch in your direction and beckon you in. Despite her shyness, she can deny her needs no longer, and you lean up just enough to brush against them, delighting in the whimper on her lips and the electric tingle on your own.");
+			outputText("[pg]The fresh dose of her venom makes [if (isgoo) {heat swell inside you|your [if (isnaga) {tail|toes}] curl}], but she fares no better, slumping forward and [if (hasbreasts) {cupping your breasts|bracing against your chest}] for support. Your head rolls back, lost in lust as her hair drapes across your stomach and sends pulsing heat straight into your core. [if (isgoo) {You melt into the warmth|Sweat trails down your back}], and the sheets are no doubt [if (isgoo) {stained|soaked through}] by now, but all that seems so far away when your mind goes fuzzy and even the press of her palms into your nipples makes your [if (isgoo) {vision blur|eyes water}].");
+			outputText("[pg]Like this, your daughter's raw, inviting scent floods your senses, and her glittering folds lie close enough to touch. Her feelers twitch with your every exhale, their tips already slick with a potent mixture of aphrodisiacs and arousal. A slight shift up and gentle squeeze of her thighs has her cling to you in anticipation, and she tickles against your face when you press in for a kiss. Unlike before, the soft taste of the lake is tinged with the saltiness of the sea, and you can feel the tension quivering in her body as you trace along her entrance, never quite dipping inside.");
+			outputText("[pg]She wants more, though, pushing back against your lips in silent demand, and you give in to the heat raging beneath your [if (isgoo) {surface|[skinshort]}] once she parts around your tongue. Even on the inside, she's surprisingly cool, but that only makes your own warmth more obvious as she shivers around you, every part of her calling out for your touch. You can hardly think of a more [father]ly duty than to soothe your daughter's needs, and the first brush of your thumb against her clit is all it takes for her thighs to clench tighter. Even her tendrils grasp at your finger, doing their best to keep you in place, and the sight of her body betraying her quiet composure comes as a heady surprise.");
+			outputText("[pg]Much like the hot sting of her hair splayed across your [if (isgoo) {base|[if (isnaga) {underbelly|legs}]}], and the little anemone's gills gliding along your stomach causes your breath to catch in your throat at what will happen next. Even though you know it's coming, the first touch of her tongue leaves you gasping into her folds, but the shock quickly fades to pleasure as she laps up everything [if (vaginalwetness > 2) {she can|you have to give}]. There's a hunger to her that " + (player.isGoo() || player.lib > 50 || player.hasStatusEffect(StatusEffects.Heat) || player.hasStatusEffect(StatusEffects.Rut) ? "you understand all too well" : "you can't imagine") + ", and each lick is so earnest in her affection that you can't help but give her what she needs.");
+			outputText("[pg]There's a delightful pause and thrust of her hips when you dip lower, [if (haslongtongue) {wrapping your lengthy tongue around|twirling your tongue across}] her clit before slipping back into her depths. As if following your lead, she too shifts, and your entire body tightens beneath your daughter when her icy kiss meets the heat of her venom and sets your world ablaze. Her legs tremble in your grasp as your moan vibrates through her, and you don't let up, sliding deeper while she does her best to hold you in place.");
+			outputText("[pg]Not a moment later, her lips brush against your [clit] and tease you with the softness that never comes. Her motions grow more and more erratic every time you swirl your tongue inside her, and the tingle of her feelers against your chin gives you just the idea to push her over the edge. She tenses in surprise as you take them between your fingers, stroking her thighs to keep her calm as their warmth seeps into you until you fear you might [if (isgoo) {melt away|break in two}]. The hushed sounds of her pleasure don't escape your notice, and every little moan that slips out of her only spurs you on more.");
+			outputText("[pg]She must need this more than you can imagine, and you're happy to help her out. Her tiny tentacles grip at your hand as you pull away, but she barely has time to notice your absence before you spread her folds and slip a venom-coated fingertip inside. Her entire body trembles against you at the first contact, her inner walls squeezing down around your tongue as the dose seeps into her body. With each slow lick, she shudders again and again, and the sight of her succumbing to her own sting is so entrancing you could never look away. Every shiver that runs through her seems to echo in your gut, but you won't be distracted from giving your daughter all that she deserves.");
+			outputText("[pg]Considering how [if (kidaxp > 66) {quiet|shy}] she often is, hearing her fall apart under your touch comes as a welcome reward, and you can hardly think of a better sound in your ears as you pull her flush with your face, uncaring of her juices trailing down your chin. The ever-present pressure of her legs around you wavers with a brush of your thumb against her clit, but it quickly returns as soon as you rub in earnest and she gasps in surprise. They clench even tighter once you slip out of her depths, pausing to let her desperation sink in for just a moment before savoring your daughter's taste, drawing out her pleasure for as long as you can.");
+			outputText("[pg]Only once she grows calm in your arms do you finally slow, delighting in how she squirms against your chest when you press your lips to hers. She's still refreshingly cool atop your own feverish heat, cuddling into your warmth as she works her way down. For a moment, you wonder if she can sense your desire or feel the venom still flowing through your [if (isgoo) {body|veins}], but the sharp chill of her fingers tracing along the inside of your thigh makes it hard to concentrate on anything else.");
+			outputText("[pg]Especially when she spreads your wetness across your [skindesc], and each stroke of her hand creeps closer to where you want her the most. It's with a curious hesitance that the little anemone finally touches your entrance, but a thrust of your hips seems to reassure her what to do. Despite knowing what's coming, you can't stop yourself from clenching down as her cold settles into your core. Each time you relax, she presses in farther, and the shock quickly fades to a tingling pleasure that leaves you breathless as she explores every inch inside.");
+			outputText("[pg]Encouraged by your reaction, she slides as deep as she can, growing more excited when you shudder every time her palm bumps against your [clit]. You grab her legs, looking for something to hold on to, and that seems to be the response that [if (kidaxp > 66) {restores her|gives her the}] confidence to truly take you as she buries her fingers inside, thrusting them about until she hits a spot that arches your back off the [if (builtbed) {bed|sheets}] in surprise. Her enthusiasm soon fills your [cabin] with the slick, sloppy sounds of your daughter's love, but it's impossible to care if anyone can hear when her head lowers just enough for her hair to drape across your lips and bright-hot pleasure flashes behind your eyes.");
+			outputText("[pg]Her hand never stops moving, even as your [vagina] grips down on her and you dig your [claws] into her thighs. The constant heat of her sting rips your breath away, rolling upwards underneath your [skindesc] until every part of you shakes in response, and you'd swear it's only by her weight on your chest that the entire [if (builtbed) {bed|floor}] doesn't fly away. You're thankful when she presses tight against you, her body molded to your own as your pleasure crests under her curled touch and your walls clench around her fingers, milking them in vain. Everything flashes hotter and hazier than before as she thrusts into you again, and finally the constant pulse of her venom spikes to a tingling high that settles over you, [if (isgoo) {saturating your core|from head to [if (isnaga) {tail-tip|[if (isdrider) {spinneret|[if (ishoofed) {hoof|toe}]}]}]}].");
+			outputText("[pg]You're vaguely aware of her motions slowing as you come out of your daze, and the stark emptiness catches you off-guard when she eventually slips out of you, your juices dripping off her fingers onto your [skindesc]. With no hesitation, she leans forward and laps it all up, leaving you to shiver beneath the soft caress of her cool tongue. Only once she's done does she turn around, and though it's hard to peer beneath the haze of her blue eyes, you've no doubt she enjoyed it as much as you. The [if (kidaxp > 66) {bright|shy}] smile she gives before [if (hasbreasts) {settling into|lying atop}] your [chest] answers all your questions, and you're content to cuddle here with your daughter while you both recover your strength. As peaceful as she is now, you almost want to run her hair between your fingers, but you quickly catch yourself and trace out her gentle curves instead.");
+			outputText("[pg]When she finally stirs, you help her to [if (builtbed) {the ground|her feet}], taking her hand in your own as you leave your [cabin] behind and step out into the [day]. The walk over to her barrel passes in comfortable silence, and she wastes no time hopping into your arms so you can help her inside. She seems to almost glow as the water washes over her, and her familiar blue darkens to a lovely shade when you claim her lips one final time.");
+			outputText("[pg]A tiny wave, barely above the rim, is the last thing you see before she sinks beneath the surface.");
+			player.orgasm('Vaginal');
+			doNext(camp.returnToCampUseOneHour);
 		}
 	}
 }

@@ -3570,6 +3570,102 @@ private function izmaValeriaToggle():void {
 	addButton(4,"Back",izmaValeriaSubmenu);
 }
 
+//Random camp event
+	public function anemoneWrasslin():void {
+		clearOutput();
+		outputText("Striding around camp, you spot Kid A sauntering down to the stream for more water. Already, you can see " + (totalIzmaChildren() > 1 ? "one of your shark daughters" : "your shark daughter") + " swimming to shore to meet her. Knowing that sharks and anemones don't always get along so well, you keep close by just in case. Izma, ever watchful of her spawn, quickly joins you.");
+		outputText("[pg]As Kid A approaches the water, the tigershark bursts out and tackles her to the ground. Instinctively, you think to run in, but Kid A isn't screaming or trying to get away.");
+		outputText("[pg][say: Come on, you blue bitch, time to start paying the toll for <b>my</b> water!] the striped girl commands. Bullying really transcends cultures and species, it seems. Kid A simply glares up at her assailant. [say: Not talking, huh? You need to learn some respect for the alpha here,] the tigershark says while smirking deviously. As she begins rubbing her cock against the anemone, Kid A retaliates and grabs the shark, twisting around and throwing her to the ground. The two tussle in the grass, rolling while locked in heated combat. Thanks to all the training you've given her, however, Kid A ends up the victor. Izma snarls furiously at her, keen to defend her offspring.");
+//		saveContent.daysSinceAneFight = 0;
+		menu();
+		addButton(0, "Stop Fight", stopTheFight);
+		addButton(1, "Let It Be", letItBe);
+	}
+
+	public function stopTheFight():void {
+		clearOutput();
+		outputText("Calming your shark lover, you get up and hurry over to end the violence. The two young girls, still at each other's throats, stop and stare in shock. Regardless of their nature, they are sisters whether they like it or not, you explain. Kid A lowers her head in shame, saying nothing, while the tigershark seizes the opportunity to push the anemone off at full force.");
+		outputText("[pg][say: She started it!] yells the girl. You are not fooled, you've been watching since the start. The shark's eyes widen as she sees she can't lie her way out. [say: Oh...]");
+		outputText("[pg]You [walk] over to help Kid A up, soon bringing the two face-to-face again. Both of them need to hug and make up; family must learn to forgive one another. The tigershark looks away and rubs her arm shyly.");
+		outputText("[pg][say: ...I was wrong to attack you,] she admits, [say: I'm sorry.]");
+		outputText("[pg]Kid A smiles and hugs the shark, yelling, [say: Family!]");
+		outputText("[pg]Izma, now much calmer, brings a hand to her heart adoringly at the sweet resolution. She holds your hand and compliments your parenting. [say: You make a wonderful [father], my alpha.]");
+		doNext(camp.returnToCampUseOneHour);
+	}
+
+	public function letItBe():void {
+		clearOutput();
+		outputText("You explain to your lover that the kids ought to learn how to deal with conflict like this without any parental intervention. Izma looks apprehensive, but she obeys her alpha without question.");
+		outputText("[pg]Straddling your striped daughter, Kid A looks down on her with a smug smirk. [say: Beta.]");
+		outputText("[pg]The shark's eyes go wide in shock. She grits her teeth and tries putting up a fight again, but her efforts are in vain against the superior fighter. As the anemone lines her cock up with the little shark's pussy, your striped daughter accepts her fate and spreads her legs for the victor.");
+		outputText("[pg]Kid A's cock slides gradually into the shark's vagina, fighting against the compressive strength of the athletic swimmer's muscles. At first, the tigershark winces and resists, but the aphrodisiac effects of the anemone's stingers force a powerful reaction out of her. She screams and tilts her head back, releasing the tension in her body and allowing Kid A to thrust all the way inside. " + (/*saveContent.tigersharksDeflowered < flags[kFLAGS.IZMA_CHILDREN_TIGERSHARKS]TODO*/true ? "Small traces of blood coat her shaft as the anemone pulls out. <b>The shark sinks her fingers into the grass, gripping hard as the sting of defloration mixes with the sting of the tendrils</b>" : "The anemone sighs blissfully as she pulls her cock out, relishing in the feeling of fucking the impudent shark") + ".");
+		outputText("[pg]Moaning loudly with her squeaky little voice, Kid A gets completely lost in the pleasure as she bucks her hips; your little shark girl only manages to briefly contain herself before embracing the anemone and giving in. The two little girls kiss passionately amidst their romp, perhaps even forgetting what lead to this in the first place. You turn to Izma to gauge her feelings on the display, and you find her staring wide-eyed with a " + (flags[kFLAGS.IZMA_NO_COCK] == 0 ? "pulsating erection poking out from under her skirt" : "deep blush tinting her face as red as it can get") + ". It doesn't look like she can easily hold back from touching herself to this, but be it her morals or a compulsion not to please herself without her alpha's permission, she keeps herself steady.");
+		outputText("[pg]Euphoric screams catch your attention once more, and you look back to see Kid A burying her dick completely inside the shark. The striped girl's cock twitches and begins ejaculating all over their stomachs as they hold each other. Kid A gives her a deep kiss, still pumping away at the orgasming tigershark's insides. Absolutely overwhelmed by the dominant sibling, your daughter is entirely at the mercy of Kid A. To the shark's fortune, the anemone soon pants and cries out her own blissful climax, spraying copious amounts of fluid before finally withdrawing her cock from the exhausted girl's depths. " + (/*saveContent.tigersharksDeflowered < flags[kFLAGS.IZMA_CHILDREN_TIGERSHARKS]TODO*/true ? "Blood-tinted s" : "S") + "emen spurts out of her abused pussy immediately, coating her thighs in sticky cum. Looking smug once again, Kid A triumphantly says [say: Beta] and resumes filling her canteen at the stream.");
+		outputText("[pg]You smirk to your lover; like mother, like daughter, isn't that right? Izma stammers, embarrassed, as she explains away the scene that just unfolded. [say: W-well, any daughter of yours that doesn't have my beta genes would be superior, I suppose...]");
+		outputText("[pg]Patting the tigershark on the back, you assure her they can't <i>all</i> be alphas. It was bound to happen; she shouldn't feel bad about it.");
+		outputText("[pg]Sufficiently riled up by the event, you stretch your limbs and head back into camp.");
+		dynStats("lus", 15);
+		//TODOif (saveContent.tigersharksDeflowered < flags[kFLAGS.IZMA_CHILDREN_TIGERSHARKS]) saveContent.tigersharksDeflowered++;
+		doNext(camp.returnToCampUseOneHour);
+	}
+
+	public function kidDickBullying():void {
+		clearOutput();
+		outputText("You're suddenly stopped by one of your tigershark daughters tugging at your arm.");
+		outputText("[pg][say: [Dad]...] she says, glum and downtrodden. Her hand falls back down from your arm, coming together in front of her with the other. Nervously, your daughter looks to you. Curious what problem seems to be on her mind, you ask the little striped shark to tell you what's wrong. She takes a deep breath and explains, [say: I was playing with my sister" + (totalIzmaChildren() > 2 ? "s" : "") + ", and...]");
+		outputText("[pg]As patient as a parent can be, you try to keep her going. [say: I-is my dick small?] she asks, trembling with genuine insecurity.");
+		//TODOsaveContent.kidDick = true;
+		menu();
+		addButton(0,"Comfort", kidDickComfort).hint("It's normal, and she shouldn't be worrying about things like this anyway, especially at her age.");
+		if (/*allowChild*/true) addButton(1, "Tease", kidDickTease).hint("Of course her dick is small.");
+		addButton(2, "Deflect", kidDickDeflect).hint("Izma's a tigershark, she knows this kind of problem way better. Your daughter should talk to her instead.");
+	}
+
+	public function kidDickComfort():void {
+		clearOutput();
+		outputText("Her dick isn't small for her age at all, it's nothing that she should be concerned about. Kids will tease each other, and that's not good, but that is normal. " + (player.longestCockLength() < 6 ? "Besides, it's not as if you yourself are packing much, and yet you are the alpha that mated one of the toughest and smartest sharks from the lake. " : "") + "While your daughters are young, they're bound to have slightly different growth rates. Even if one has a larger penis than another, that doesn't mean it will stay that way. Most of all, no matter what size she has, she can and will be a wonderful person. You and Izma both love her, and sexual endowment is completely irrelevant to that.");
+		outputText("[pg]The tigershark brightens up, smiling. [say: Thanks, [Dad]. I love you.] Still visibly a little insecure, she is at least happier now. She grabs hold of you and hugs tightly, relaxing much more when you return the embrace.");
+		doNext(playerMenu);
+	}
+
+	public function kidDickTease():void {
+		clearOutput();
+		outputText("She's a little girl, tigershark or not, what could you really expect? You gesture for her to present her penis so you'll be able to say for sure.");
+		outputText("[pg]Your daughter blushes and looks down, shakily raising her hands as told. [say: I-is it small?]");
+		outputText("[pg]Dangling from above her vagina is a nervously twitching little cock and childish little testicles, looking much like a very miniature version of Izma's" + (flags[kFLAGS.IZMA_NO_COCK] > 0 ? " former tool" : "") + ". Your expression says a lot, but your words say more as you can't help but note the embarrassing lack of length or girth. She's a tigershark, so you really expect better. Even a human preteen has a strong chance of packing more than your daughter is sporting. Marveling at the pathetic cock, you curiously flick it with your finger, watching as it hardens a little more from the contact.");
+		outputText("[pg]The little striped girl shivers and stifles a cry. [say: I'm sorry,] she says, heart-broken as she processes the situation. [say: I'll never be an alpha, will I?]");
+		outputText("[pg]It would be a genuine shock if she ever managed that. Among sharks, even [if (metric) {17 centimeters|7 inches}] is lacking, and from the looks of it, this little girl won't even get <i>that</i> big by the time she's an adult. Despite your alpha prowess and Izma's natural endowment, all this child inherited was " + (player.longestCockLength() < 5 ? "<i>your</i> endowment and " : "") + "Izma's beta disposition. How's that for a genetic lottery?");
+		outputText("[pg]As her tears begin to stream down her face, your daughter asks, [say: Am I worthless?]");
+		menu();
+		doYesNo(kidDickTeaseYes, kidDickTeaseNo);
+	}
+
+	public function kidDickTeaseYes():void {
+		clearOutput();
+		outputText("Must it even be said? She's weak-willed, insecure, and sexually pathetic. Your daughter is a genetic dead-end who won't make a dent in the gene pool, unlike her sibling" + (flags[kFLAGS.IZMA_CHILDREN_TIGERSHARKS] > 2 ? "s" : "") + ". Without a doubt, this tigershark is a waste of space at best and an insult to your lineage otherwise.");
+		outputText("[pg]The tiny-dicked shark begins bawling her eyes out, completely stricken by grief. You assure her there's nothing crying can do to help her now, as you know full well she's just the runt of the family which your other offspring might at least get to practice domming. The little girl runs off back to the stream, to soak and calm herself until she eventually starts getting bullied again. At least you know " + (flags[kFLAGS.IZMA_CHILDREN_TIGERSHARKS] > 2 ? "whichever" : "your") + " other tigershark who teased her is an alpha in the making.");
+		doNext(playerMenu);
+	}
+
+	public function kidDickTeaseNo():void {
+		clearOutput();
+		outputText("This shark may be pathetic, but she is <i>your</i> little girl. Tease her though you may, you love her. Every family is bound to have a runt, and she can still be a very cute submissive.");
+		outputText("[pg]Sniffling, she chokes back her despair. [say: Really?]");
+		outputText("[pg]Alpha would really lose meaning if no one was beta. Rather than dread her tiny little prick, she should look at it as physical evidence that she was born to submit and serve a greater being than herself. The first step to being a good beta is accepting that she is one, of course.");
+		outputText("[pg]Your daughter twiddles her thumbs nervously, still shaky about the idea. After some deliberation, however, she obeys. [say: I-I'm a beta.]");
+		outputText("[pg]Indeed, she is, but does she understand what makes her a beta? You coax her to expound further.");
+		outputText("[pg]Taking in a deep breath, she spouts, [say: I'm a weak little beta shark with a tiny penis!]");
+		outputText("[pg]That's a good beta. You pat her affectionately on the head, soon ushering her away to go back to the stream where, you expect, she'll once again be teased. At least now she may learn to enjoy it, and be good fodder for your other offspring to practice being an alpha on.");
+		doNext(playerMenu);
+	}
+
+	public function kidDickDeflect():void {
+		clearOutput();
+		outputText("This really isn't and shouldn't be your territory to discuss. Izma is a tigershark and she no-doubt grew up with wannabe alphas that teased her; therefore, she is absolutely well-equipped to handle this. You explain to your daughter that, though you love her, this is one of those times that her other parent is the better one to go to.");
+		outputText("[pg][say: O-okay. I'm sorry, thank you, [Dad],] she says, visibly feeling ashamed of saying something so embarrassing. Yet again, you make an effort to express your parental care to comfort her, but you still have to usher her away to see Izma about it.");
+		doNext(playerMenu);
+	}
+
 public function mishapsLunaIzma():void {
 	clearOutput();
 	outputText("You pass by Izma’s spot and to your surprise, the smell of fish assaults your nose. For some weird reason, the entire area around Izma bedroll now smells of fish and, heck, it smells so much you decide to keep your distance until it’s gone.\n\n");

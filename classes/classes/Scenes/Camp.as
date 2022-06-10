@@ -698,6 +698,26 @@ public class Camp extends NPCAwareContent{
 			hideMenus();
 			return;
 		}
+		if (flags[kFLAGS.IZMA_CHILDREN_TIGERSHARKS] > 0 && flags[kFLAGS.KID_A_XP] == 100 && /*allowChild && izmaScene.saveContent.daysSinceAneFight > 72 &&TODO*/ rand(30) == 0) {
+			izmaScene.anemoneWrasslin(); //Kid A fights a tigershark
+			hideMenus();
+			return;
+		}
+		if (flags[kFLAGS.IZMA_CHILDREN_TIGERSHARKS] > 1 /*&& !izmaScene.saveContent.kidDickTODO*/ && rand(40) == 0) {
+			izmaScene.kidDickBullying(); //Your daughter's dick is tiny
+			hideMenus();
+			return;
+		}
+		if (helspawnFollower() && flags[kFLAGS.KID_A_XP] >= 50 /*&& !helSpawnScene.saveContent.sippedAnemoneTODO*/ && rand(10) == 0) {
+			helSpawnScene.helspawnDrinkKidAJuice();
+			hideMenus();
+			return;
+		}
+//		if (kihaFollowerScene.totalKihaChildren() > 0 && !game.kihaFollowerScene.saveContent.kidFirebreathing && rand(30) == 0) {
+//			kihaFollowerScene.kihaChildFirebreathing();
+//			hideMenus();
+//			return;
+//		}//TODO
 		if (flags[kFLAGS.D3_GOBLIN_MECH_PRIME] == 1 && player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) {
 			outputText("Finally back to [camp], you get to work calling on your crew of daughters to pass the upgrades from one mech to another.\n\n");
 			outputText("You make a final checkup for potential glitches and possible mechanical errors and find none, guess the lizards didn't damage it. Gosh this little beauty is going to be fun to use.\n\n");
@@ -3617,6 +3637,16 @@ public class Camp extends NPCAwareContent{
 					sleepRecovery(false);
 					return;
 				}
+			}
+			else if (flags[kFLAGS.SLEEP_WITH] == "Helia" && helScene.followerHel()) {
+				images.showImage("camp-sleep-helia");
+				helFollower.heliaSleep();
+			}
+			else if (flags[kFLAGS.SLEEP_WITH] == "Helspawn") {
+				helSpawnScene.helspawnSleep();
+			}
+			else if (flags[kFLAGS.SLEEP_WITH] == "salamanders") {
+				helFollower.salamandersSleep();
 			} else if (flags[kFLAGS.SLEEP_WITH] == "Arian" && arianScene.arianFollower()) {
 				arianScene.sleepWithArian();
 				return;

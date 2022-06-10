@@ -2785,7 +2785,7 @@ public static const UNKNOWN_FLAG_NUMBER_02776:int                               
 public static const UNKNOWN_FLAG_NUMBER_02777:int                                   = 2777;
 public static const UNKNOWN_FLAG_NUMBER_02778:int                                   = 2778;
 public static const UNKNOWN_FLAG_NUMBER_02779:int                                   = 2779;
-public static const UNKNOWN_FLAG_NUMBER_02780:int                                   = 2780;
+public static const HELSPAWN_HADSEX:int                                   			= 2780;
 public static const UNKNOWN_FLAG_NUMBER_02781:int                                   = 2781;
 public static const UNKNOWN_FLAG_NUMBER_02782:int                                   = 2782;
 public static const UNKNOWN_FLAG_NUMBER_02783:int                                   = 2783;

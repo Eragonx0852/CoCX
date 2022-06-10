@@ -58,8 +58,8 @@ public function helAffection(diff:Number = 0):Number {
 		if(diff > 0) if(flags[kFLAGS.HEL_BONUS_POINTS] > 150) flags[kFLAGS.HEL_BONUS_POINTS] = 150;
 		else if(diff < 0) if(flags[kFLAGS.HEL_BONUS_POINTS] < 0) flags[kFLAGS.HEL_BONUS_POINTS] = 0;		
 	}
-	return flags[kFLAGS.HEL_AFFECTION_FOLLOWER];
 	trace("HEL AFFECTION" + flags[kFLAGS.HEL_AFFECTION_FOLLOWER]);
+	return flags[kFLAGS.HEL_AFFECTION_FOLLOWER];
 }
 public function isHeliaBirthday():Boolean {
 	return date.month == 7;
@@ -518,6 +518,8 @@ public function heliaFollowerMenu(display:Boolean = true):void {
 		if (!SceneLib.helScene.pregnancy.isPregnant && flags[kFLAGS.CAMP_UPGRADES_SPARING_RING] >= 2) addButton(5,"Spar",sparWithHeliaFirebuttsAreHot).hint("Do some quick fight sessions!");
 		else outputText("\n\n<b>Helia will not spar or box while pregnant.</b>");
 		if (!SceneLib.helScene.pregnancy.isPregnant) addButton(6,"Box",boxWithInCampHel).hint("Box with Helia and train your strength and toughness.");
+		if (flags[kFLAGS.SLEEP_WITH] == "Helia") addButton(9, "Sleep Alone", dontSleepWithHelia);
+		else addButton(9, flags[kFLAGS.SLEEP_WITH] == "salamanders" ? "Sleep Without" : "Sleep With", heliaSleepWith);
 		if (flags[kFLAGS.HEL_LOVE] == 1 || flags[kFLAGS.HEL_LOVE] == -1) {
 			if(player.hasCock() && player.cockThatFits(heliaCapacity()) >= 0 && player.lust >= 33 &&
 					!helPregnant() && flags[kFLAGS.HELSPAWN_AGE] == 0) addButton(7,"Have A Kid",helSpawnScene.haveAKid).hint("Get Helia pregnant and start a family with her.");
@@ -2432,6 +2434,78 @@ outputText("\n\nYour hand slides across Sophie’s stomach to squeeze one of her
 	menu();
 	doNext(camp.returnToCampUseOneHour);
 }
+
+	public function heliaSleepWith():void {
+		clearOutput();
+		if (flags[kFLAGS.SLEEP_WITH] == "Helspawn") {
+			outputText("While you already have one salamander sharing your [bed] at night, you wouldn't mind more in the slightest. You suggest to Hel that the three of you might all sleep together as a family, and her eyes immediately light up.");
+			outputText("[pg][say: Sounds like a great idea, lover mine. Might get a bit steamy, though.]");
+			outputText("[pg]She grins and flicks her fiery tail in your direction. It's a potent distraction, as you don't notice her sly arms until they've already slipped around you.");
+			outputText("[pg][say: I snore, though. Just sayin'.]");
+			flags[kFLAGS.SLEEP_WITH] = "salamanders";
+		}
+		else if (flags[kFLAGS.SLEEP_WITH] == "salamanders") {
+			outputText("You tell Hel that two salamanders is just too much to handle. You need your rest in the evenings, so you'd prefer if your [bed] was a bit less crowded for the moment.");
+			outputText("[pg]She grins and responds, [say: I understand, I'm a lot to take in, especially into your bedroom.] She punctuates this point by running a hand up her toned stomach and heaving her bosom oh so seductively. You feel a faint stirring coming from below.");
+			outputText("[pg][say: Well, if you ever want me back in your bed, just let me know.]");
+			outputText("[pg]You certainly will.");
+			flags[kFLAGS.SLEEP_WITH] = "Helspawn";
+		}
+		else {
+			outputText("You ask Hel if she wouldn't mind sleeping with you at night. She'd certainly be able to warm you up on those cold Marethian evenings.");
+			outputText("[pg][say: Hmm, I don't know, babe, my hammock is pretty comfy,] she says, patting the cradle in question with a mischievous smile. However, she breaks her own ruse fairly quickly, unable to contain her excitement at your offer. [say: Of course I'd love that. As long as you can handle a little... \"nighttime entertainment\".]");
+			outputText("[pg]Her lashing tail gives you no doubt as to what she means by that, and you can only hope that you'll still have enough time for actual sleep too.");
+			flags[kFLAGS.SLEEP_WITH] = "Helia";
+		}
+		doNext(heliaFollowerMenu);
+	}
+
+	public function heliaSleep():void {
+		switch (rand(4)) {
+			case 0:
+				outputText("You arrive at your [cabin] and can already hear a sawing noise coming from inside. Poking your head in, you see your salamander lover already sprawled across your [bed], snoring loudly. She must have had an eventful day, you think as you try to slide in next to her. Thankfully, the sleeping salamander seems to react to your presence, easily allowing you to get under the covers alongside her.");
+				outputText("[pg]As you settle in, her snoring fades, and she unconsciously hugs herself closer to you. Everything at peace, you nod off.");
+				break;
+			case 1:
+				outputText("You and Helia show up at your [cabin] at the same time, apparently both of one mind with regards to sleep. She wordlessly takes your [hand] and draws you inside, a light giggle the only sound breaking the evening silence. You can barely get your [armor] off before she's all over you, hugging you tightly and stroking your sides.");
+				outputText("[pg]However, Hel seems just as exhausted as you, so without too much delay, the two of you make your way over to the [bed] and plop down. She hugs you tight, kisses your cheek, and swiftly nods off, her gentle snoring tickling your [ears].");
+				break;
+			case 2:
+				outputText("You [if (singleleg) {slide|step}] into the cabin and are immediately confronted with the sight of Helia sprawled seductively across your [bed]. Her crimson eyes smolder with lust, and her body is completely bared for your viewing pleasure.");
+				outputText("[pg][say: Hey, lover... care to join me?]");
+				outputText("[pg]A tempting offer. You quickly get ready and slip into your [bed], and Helia's arms are immediately all over you. As she showers you in kisses, you prepare for an invigorating, if not quite restful night.");
+				break;
+			case 3:
+				outputText("You lie down on the [bed] next to Hel, but she seems oddly quiet tonight. Usually she'd be talking your ear off, plying you for sex, or snoring by now, but instead she just lies there looking at you. Your eyes meet, and she smiles gently.");
+				outputText("[pg][say: Sometimes it just hits me, you know? I can't believe I have this... Get over here.]");
+				outputText("[pg]The salamander scoots closer and throws her arms around you, her tail wrapping around your [legs] as well. You remained entangled in each other's embrace as you gently drift off to sleep.");
+				break;
+			default:
+		}
+		doNext(camp.doSleep);
+	}
+
+	public function salamandersSleep():void {
+		switch (rand(3)) {
+			case 0:
+				outputText("You enter your [cabin] only to find both Hel and [Helspawn] already there. They've both [if (builtcabin) {already hopped up on the bed, leaving|set up their own bedrolls on either side of yours, but there's}] little room left for you to squeeze in. Nonetheless, you give it your best go and somehow manage to fit between the girls, the warmth of their bodies quickly putting you at ease.");
+				outputText("[pg][say: Hey, stop hogging [if (helspawnincest) {[him]|[if (builtcabin) { the bed|all the space}]}], Mom!]");
+				outputText("[pg][say: Oh, hush, there's plenty to go around.]");
+				outputText("[pg]The two continue on in this fashion for some time, but despite the apparent discord, you can't help but think about how wonderful it is to have both your daughter and your lover by your side. Eventually, everything settles down, and you drift off to sleep [if (helspawnincest) {sandwiched between the two fiery vixens|with your loving family around you}]. ");
+				break;
+			case 1:
+				outputText("On your way to your [cabin], you run into [Helspawn] heading in the same direction. She waves wearily, and you continue on together, picking up Helia as well along the way. The three of you seem similarly exhausted, and so as soon as you make your way inside, you all collapse together in a pile, the familial warmth lulling you into unconsciousness.");
+				break;
+			case 2:
+				outputText("You're getting ready for bed when Helia slips into your [cabin]. You hardly have time to get fully [if (isnaked) {prepared|undressed}] before she's already upon you, kissing your neck while her hands frantically work at the straps of her bikini. When she finally manages to get it off, she pushes you down and back onto your [bed].");
+				outputText("[pg][say: [if (helspawnchaste) {Oh, u-um... Sorry if I'm interrupting...|[if (helspawnincest) {Oh, getting started without me, huh?|Sheesh, get a room you two. A different room.}]}]]");
+				outputText("[pg]Helia's head snaps back, and when she sees her daughter, she shifts over to the side. [say: [if (helspawnincest) {Well why don't you join us? There's plenty of room, and plenty of [name]|Oh, we were just getting a little frisky. But it's bedtime, get over here, kiddo}].]");
+				outputText("[pg][Helspawn] [if (helspawnchaste) {drifts|sidles}] over to your [bed] and lies down next to you. [if (helspawnincest) {Two pairs of hands keep you company under the covers, reminding you of their love|You take comfort in having your family so close to you, just relaxing}] until, eventually, it really is time to sleep.");
+				break;
+			default:
+		}
+		doNext(camp.doSleep);
+	}
 
 public function mishapsLunaHel():void {
 	clearOutput();

@@ -572,6 +572,11 @@ public class ParserTags {
         "esteem": function ():* { return CoC.instance.player.esteem; },
         "obey"  : function ():* { return CoC.instance.player.obey; },
         "will"  : function ():* { return CoC.instance.player.will;}
+
+        //Helspawn
+        "helspawnvirgin"    : function():* {return CoC.instance.flags[kFLAGS.HELSPAWN_HADSEX] == 0;},
+        "helspawnincest"    : function():* {return CoC.instance.flags[kFLAGS.HELSPAWN_INCEST] == 1;}
+
     };
 
     internal static function skinDescriptionFn(layer:String, noAdj:Boolean, noTone:Boolean):Function {
