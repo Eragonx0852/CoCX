@@ -763,6 +763,27 @@ public class Parser
 			}
 		}
 
+		/**
+		 * Finds the matching, non-escaped, closing character in a String
+		 * @param text the text to search
+		 * @param openIndex the index of the opening bracket
+		 * @param openChar  the opening bracket character, used to check for nested pairs
+		 * @param closeChar the closing character to look for
+		 * @return the index of the closing bracket, or -1 if not found
+		 */
+		private static function findCloseBracket(text:String, openIndex:int, openChar:String, closeChar:String):int {
+			var openCount:int = 1;
+			for (var i:int = openIndex + 1; i < text.length; i++) {
+				if (text.charAt(i - 1) == "\\") {continue;}
+				var charAt:String = text.charAt(i);
+				if (charAt == openChar) {openCount++;} else if (charAt == closeChar) {openCount--;}
+				if (openCount == 0) {
+					return i;
+				}
+			}
+			return -1;
+		}
+
         /**
          * Main parser function.
 		 *
@@ -780,6 +801,8 @@ public class Parser
 
 			// Run through the parser
 			contents       = contents.replace(/\\n/g, "\n");
+			var sayTag:RegExp = /(?<!\\)\[(say):/i;
+			contents = expandTag(contents, sayTag);
             var ret:String = recParser(contents, 0);
 			if (printIntermediateParseStateDebug) trace("WARNING: Parser intermediate contents = ", ret);
 
@@ -797,6 +820,28 @@ public class Parser
 
 			return ret
 
+			function expandTag(textContent:String, expr:RegExp):String {
+				var matched:* = expr.exec(textContent);
+				while (matched) {
+					var closeBracket:int = findCloseBracket(textContent, matched.index, "[", "]");
+
+					if (closeBracket == -1) {
+						// parseTags will handle the unclosed tag error, just return
+						return textContent
+					}
+
+					var preBracket:String  = textContent.substring(0, matched.index);
+					var postBracket:String = textContent.substring(closeBracket + 1);
+					var contBracket:String = textContent.substring(matched.index + 1, closeBracket);
+					var updated:String     = contBracket.replace(/^.+?: */i, "");
+					var fmt:String         = matched[1];
+
+					textContent = preBracket + "[" + fmt + "start]" + updated + "[" + fmt + "end]" + postBracket;
+
+					matched = expr.exec(textContent);
+				}
+				return textContent;
+			}
 		}
 
 		// ---------------------------------------------------------------------------------------------------------------------------------------

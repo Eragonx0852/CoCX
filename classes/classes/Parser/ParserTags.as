@@ -51,6 +51,8 @@ public class ParserTags {
         "cockhead"              : function ():* { return CoC.instance.player.cockHead(0); },
         "cocks"                 : function ():* { return CoC.instance.player.multiCockDescriptLight(); },
         "cunt"                  : function ():* { return CoC.instance.player.vaginaDescript(); },
+        "dad"					: function ():* { return CoC.instance.player.mf("dad", "mom"); },
+        "daddy"					: function ():* { return CoC.instance.player.mf("daddy", "mommy"); },
         "eachcock"              : function ():* { return CoC.instance.player.sMultiCockDesc(); },
         "ears"                  : function ():* { return CoC.instance.player.earsDescript(); },
         "evade"                 : function ():* { return "[Evade]"; },
@@ -571,7 +573,7 @@ public class ParserTags {
         //Prison
         "esteem": function ():* { return CoC.instance.player.esteem; },
         "obey"  : function ():* { return CoC.instance.player.obey; },
-        "will"  : function ():* { return CoC.instance.player.will;}
+        "will"  : function ():* { return CoC.instance.player.will;},
 
         //Helspawn
         "helspawnvirgin"    : function():* {return CoC.instance.flags[kFLAGS.HELSPAWN_HADSEX] == 0;},
