@@ -5431,7 +5431,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 
 	public const ArmsAvian: Transformation = new SimpleTransformation("Avian Arms",
 	  // apply effect
-	  function (doOutput: Boolean): void {//TODO Metamorph
+	  function (doOutput: Boolean): void {
 	    var desc: String = "";
 
 	    if (player.skin.hasChitin()) {
@@ -5453,6 +5453,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 
 	    player.arms.type = Arms.AVIAN;
 	    if (doOutput) outputText(desc);
+		  Metamorph.unlockMetamorph(ArmsMem.getMemory(ArmsMem.AVIAN));
 	  },
 	  // is present
 	  function (): Boolean {
@@ -5837,6 +5838,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 
 	    player.gills.type = Gills.ANEMONE;
 	    if (doOutput) outputText(desc);
+		  Metamorph.unlockMetamorph(GillsMem.getMemory(GillsMem.ANEMONE));
 	  },
 	  // is present
 	  function (): Boolean {
@@ -12269,7 +12271,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 				player.createPerk(PerkLib.BeeOvipositor, 0, 0, 0, 0);
 
 				if (doOutput) outputText(desc);
-				//Metamorph.unlockMetamorph(SpecialsMem.getMemory(SpecialsMem.OVIPOSITOR));
+				Metamorph.unlockMetamorph(SpecialsMem.getMemory(SpecialsMem.OVIPOSITOR));
 			},
 			// is present
 			function ():Boolean {
@@ -12297,7 +12299,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 				player.createPerk(PerkLib.SpiderOvipositor, 0, 0, 0, 0);
 
 				if (doOutput) outputText(desc);
-				//Metamorph.unlockMetamorph(SpecialsMem.getMemory(SpecialsMem.OVIPOSITOR));
+				Metamorph.unlockMetamorph(SpecialsMem.getMemory(SpecialsMem.OVIPOSITOR));
 			},
 			// is present
 			function ():Boolean {
@@ -12323,7 +12325,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 				player.createPerk(PerkLib.MantisOvipositor, 0, 0, 0, 0);
 
 				if (doOutput) outputText(desc);
-				//Metamorph.unlockMetamorph(SpecialsMem.getMemory(SpecialsMem.OVIPOSITOR));
+				Metamorph.unlockMetamorph(SpecialsMem.getMemory(SpecialsMem.OVIPOSITOR));
 			},
 			// is present
 			function ():Boolean {
