@@ -649,37 +649,41 @@ import classes.CoC;
 			if (flags[kFLAGS.SOUL_CULTIVATION] >= 13) max += 30 * (flags[kFLAGS.SOUL_CULTIVATION] - 12);//Soul Scholar
 			if (flags[kFLAGS.SOUL_CULTIVATION] >= 16) max += 30 * (flags[kFLAGS.SOUL_CULTIVATION] - 15);//Soul Elder
 			if (flags[kFLAGS.SOUL_CULTIVATION] >= 19) max += 60 * (flags[kFLAGS.SOUL_CULTIVATION] - 18);//Soul Exalt
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 22) max += 60 * (flags[kFLAGS.SOUL_CULTIVATION] - 21);//Soul Overlord
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 25) max += 90 * (flags[kFLAGS.SOUL_CULTIVATION] - 24);//Soul Tyrant
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 28) max += 90 * (flags[kFLAGS.SOUL_CULTIVATION] - 27);//Soul King
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 31) max += 120 * (flags[kFLAGS.SOUL_CULTIVATION] - 30);//Soul Emperor
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 34) max += 120 * (flags[kFLAGS.SOUL_CULTIVATION] - 33);//Soul Ancestor
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 37) max += 150 * (flags[kFLAGS.SOUL_CULTIVATION] - 36);//Soul Sovereign
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 40) max += 150 * (flags[kFLAGS.SOUL_CULTIVATION] - 39);//Soul Saint
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 43) max += 180 * (flags[kFLAGS.SOUL_CULTIVATION] - 42);//Soul Paragon
-			if (flags[kFLAGS.SOUL_CULTIVATION] >= 46) max += 180 * (flags[kFLAGS.SOUL_CULTIVATION] - 45);//Soul Immortal
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 23) max += 60 * (flags[kFLAGS.SOUL_CULTIVATION] - 22);//Soul Overlord
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 27) max += 60 * (flags[kFLAGS.SOUL_CULTIVATION] - 26);//Soul Tyrant
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 31) max += 90 * (flags[kFLAGS.SOUL_CULTIVATION] - 30);//Soul King
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 35) max += 90 * (flags[kFLAGS.SOUL_CULTIVATION] - 34);//Soul Emperor
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 39) max += 90 * (flags[kFLAGS.SOUL_CULTIVATION] - 38);//Soul Ancestor
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 43) max += 150 * (flags[kFLAGS.SOUL_CULTIVATION] - 42);//Soul Sovereign
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 48) max += 150 * (flags[kFLAGS.SOUL_CULTIVATION] - 47);//Soul Saint
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 53) max += 150 * (flags[kFLAGS.SOUL_CULTIVATION] - 52);//Soul Paragon
+			if (flags[kFLAGS.SOUL_CULTIVATION] >= 58) max += 210 * (flags[kFLAGS.SOUL_CULTIVATION] - 57);//Soul Immortal
 			if (hasPerk(PerkLib.DemonicLethicite)) max += Math.round(lib);
 			if (hasPerk(PerkLib.Metamorph)) max += (50 * (1 + perkv1(PerkLib.Metamorph)));
 			if (hasPerk(PerkLib.MetamorphEx)) max += (50 + (100 * perkv1(PerkLib.MetamorphEx)));
 			if (hasPerk(PerkLib.DaoistApprenticeStage)) {
-				if (hasPerk(PerkLib.SoulApprentice)) max += 40;
-				if (hasPerk(PerkLib.SoulPersonage)) max += 40;
-				if (hasPerk(PerkLib.SoulWarrior)) max += 40;
+				if (hasPerk(PerkLib.SoulApprentice)) max += 50;
+				if (hasPerk(PerkLib.SoulPersonage)) max += 50;
+				if (hasPerk(PerkLib.SoulWarrior)) max += 50;
+				multimax += 0.05;
 			}
 			if (hasPerk(PerkLib.DaoistWarriorStage)) {
-				if (hasPerk(PerkLib.SoulSprite)) max += 60;
-				if (hasPerk(PerkLib.SoulScholar)) max += 60;
-				if (hasPerk(PerkLib.SoulElder)) max += 60;
+				if (hasPerk(PerkLib.SoulSprite)) max += 100;
+				if (hasPerk(PerkLib.SoulScholar)) max += 100;
+				if (hasPerk(PerkLib.SoulElder)) max += 100;
+				multimax += 0.05;
 			}
 			if (hasPerk(PerkLib.DaoistElderStage)) {
-				if (hasPerk(PerkLib.SoulExalt)) max += 100;
-				if (hasPerk(PerkLib.SoulOverlord)) max += 100;
-				if (hasPerk(PerkLib.SoulTyrant)) max += 100;
+				if (hasPerk(PerkLib.SoulExalt)) max += 200;
+				if (hasPerk(PerkLib.SoulOverlord)) max += 200;
+				if (hasPerk(PerkLib.SoulTyrant)) max += 200
+				multimax += 0.1;
 			}
 			if (hasPerk(PerkLib.DaoistOverlordStage)) {
-				if (hasPerk(PerkLib.SoulKing)) max += 150;
-				if (hasPerk(PerkLib.SoulEmperor)) max += 150;
-				if (hasPerk(PerkLib.SoulAncestor)) max += 150;
+				if (hasPerk(PerkLib.SoulKing)) max += 300;
+				if (hasPerk(PerkLib.SoulEmperor)) max += 300;
+				if (hasPerk(PerkLib.SoulAncestor)) max += 300;
+				multimax += 0.1;
 			}
 			if (hasPerk(PerkLib.AscensionSoulPurity)) max += perkv1(PerkLib.AscensionSoulPurity) * 50;
 			if (jewelryEffectId == JewelryLib.MODIFIER_SF) max += jewelryEffectMagnitude;//+100

@@ -60,7 +60,7 @@ public class TrachealSystemMutation extends IMutationPerkType
                 this.requirements = [];
                 if (pTier == 0){
                     this.requireAdaptationsMutationSlot()
-                    .requireAnyRace(Races.MANTIS, Races.SCORPION, Races.SPIDER, Races.CANCER, Races.ATLACH_NACHA);
+                    .requireAnyRace(Races.MANTIS, Races.SCORPION, Races.SPIDER, Races.CANCER, Races.ATLACH_NACHA, Races.ANT);
                 }
                 else{
                     var pLvl:int = pTier * 30;
@@ -98,8 +98,7 @@ public class TrachealSystemMutation extends IMutationPerkType
         }
 
         public function TrachealSystemMutation() {
-            super("Tracheal System IM", "Tracheal System", ".");
-            maxLvl = 4;
+            super("Tracheal System IM", "Tracheal System", SLOT_ADAPTATIONS, 4);
         }
 
     }

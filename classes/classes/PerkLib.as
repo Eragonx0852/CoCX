@@ -3499,20 +3499,16 @@ public class PerkLib
 				"You've chosen the 'Daoist Cultivator' perk, starting the journey on the daoist cultivators path! (+20% soulskill/m.soulskill power, -10% soulskills cost, +50% base soulforce recovery multiplier)")
 				.withBuffs({'maxsf_base':+25});
 		public static const DaoistApprenticeStage:PerkType = mk("Daoist: Apprentice Stage", "Daoist: Apprentice Stage",
-				"Your reached first stage of Daoist path. (+40% soulskill/m.soulskill power, +40 max SF at S.Apprentice, S.Personage, S.Warrior stages)",
-				"You've chosen the 'Daoist: Apprentice Stage' perk, progressing on your Daoist path. (+40% soulskill/m.soulskill power, +40 max SF at S.Apprentice, S.Personage, S.Warrior stages)");
+				"Your reached first stage of Daoist path. (+30% soulskill/m.soulskill power, -10% soulskills cost, +50 max SF at S.Apprentice, S.Personage, S.Warrior stages, +5% to max, +50% base soulforce recovery multiplier)");
 		public static const DaoistElderStage:PerkType = mk("Daoist: Elder Stage", "Daoist: Elder Stage",
-				"Your reached third stage of Daoist path. (+80% soulskill/m.soulskill power, +100 max SF at S.Exalt, S.Overlord, S.Tyrant stages)",
-				"You've chosen the 'Daoist: Elder Stage' perk, progressing on your Daoist path. (+80% soulskill/m.soulskill power, +100 max SF at S.Exalt, S.Overlord, S.Tyrant stages)");
+				"Your reached third stage of Daoist path. (+100% soulskill/m.soulskill power, -10% soulskills cost, +200 max SF at S.Exalt, S.Overlord, S.Tyrant stages, +10% to max, +100% base soulforce recovery multiplier)");
 		public static const DaoistOverlordStage:PerkType = mk("Daoist: Overlord Stage", "Daoist: Overlord Stage",
-				"Your reached fourth stage of Daoist path. (+100% soulskill/m.soulskill power, +150 max SF S.King, S.Emperor, S.Ancestor stages)",
-				"You've chosen the 'Daoist: Overlord Stage' perk, progressing on your Daoist path. (+100% soulskill/m.soulskill power, +150 max SF S.King, S.Emperor, S.Ancestor stages)");
+				"Your reached fourth stage of Daoist path. (+140% soulskill/m.soulskill power, -10% soulskills cost, +300 max SF S.King, S.Emperor, S.Ancestor stages, +10% to max, +100% base soulforce recovery multiplier)");
 		public static const DaoistTyrantStage:PerkType = mk("Daoist: Tyrant Stage", "Daoist: Tyrant Stage",
 				"Your reached fifth stage of Daoist path.",
 				"You've chosen the 'Daoist: Tyrant Stage' perk, progressing on your Daoist path. (+150% soulskill/m.soulskill power, +70 max SF at )");
 		public static const DaoistWarriorStage:PerkType = mk("Daoist: Warrior Stage", "Daoist: Warrior Stage",
-				"Your reached second stage of Daoist path. (+60% soulskill/m.soulskill power, +60 max SF at S.Sprite, S.Scholar, S.Elder stages)",
-				"You've chosen the 'Daoist: Warrior Stage' perk, progressing on your Daoist path. (+60% soulskill/m.soulskill power, +60 max SF at S.Sprite, S.Scholar, S.Elder stages)");
+				"Your reached second stage of Daoist path. (+60% soulskill/m.soulskill power, -10% soulskills cost, +100 max SF at S.Sprite, S.Scholar, S.Elder stages, +5% to max, +50% base soulforce recovery multiplier)");
 		public static const EclassHeavenTribulationSurvivor:PerkType = mk("E class Heaven Tribulation Survivor", "E class Heaven Tribulation Survivor",
 				"You have survived the fourth trial on cultivation path: E class Heaven Tribulation. +25% to all stats multi.").withBuffs({'str.mult':0.25,'tou.mult':0.25,'spe.mult':0.25,'int.mult':0.25,'wis.mult':0.25,'lib.mult':0.25,'sens':125}, false);
 		public static const FclassHeavenTribulationSurvivor:PerkType = mk("F class Heaven Tribulation Survivor", "F class Heaven Tribulation Survivor",
@@ -3552,13 +3548,13 @@ public class PerkLib
 				"You have reached 6th stage of soul cultivation. (+25 max Hunger, +150 max SF at lvl 45, 48, 51; +15% to max SF)")
 				.withBuffs({'wis.mult':0.10});
 		public static const SoulExalt:PerkType = mk("Soul Exalt", "Soul Exalt",
-				"You have reached 7th stage of soul cultivation. (+30 max Hunger, +5 to max Wis, +90 max SF at lvl 42, 44, 46; +20% to max SF at lvl 42)")
+				"You have reached 7th stage of soul cultivation. (+30 max Hunger, +210 max SF at lvl 54, 57, 60, 63; +20% to max SF)")
 				.withBuffs({'wis.mult':0.15});
 		public static const SoulKing:PerkType = mk("Soul King", "Soul King",
 				"You have reached 10th stage of soul cultivation. (+35 max Hunger, +5 to max Wis, +120 max SF at lvl 60, 62, 64; +25% to max SF at lvl 60)")
 				.withBuffs({'wis.mult':0.20});
 		public static const SoulOverlord:PerkType = mk("Soul Overlord", "Soul Overlord",
-				"You have reached 8th stage of soul cultivation. (+30 max Hunger, +5 to max Wis, +100 max SF at lvl 48, 50, 52; +20% to max SF at lvl 48)")
+				"You have reached 8th stage of soul cultivation. (+30 max Hunger, +270 max SF at lvl 66, 69, 72, 75; +20% to max SF)")
 				.withBuffs({'wis.mult':0.15});
 		public static const SoulPersonage:PerkType = mk("Soul Personage", "Soul Personage",
 				"You have reached 2nd stage of soul cultivation. (+20 max Hunger, +45 max SF at lvl 9, 12, 15; +10% to max SF)")
@@ -3573,7 +3569,7 @@ public class PerkLib
 				.withBuffs({'wis.mult':0.10});
 		public static const SoulTempering:SoulTemperingPerk = new SoulTemperingPerk();
 		public static const SoulTyrant:PerkType = mk("Soul Tyrant", "Soul Tyrant",
-				"You have reached 9th stage of soul cultivation. (+30 max Hunger, +5 to max Wis, +110 max SF at lvl 54, 56, 58; +20% to max SF at lvl 54)")
+				"You have reached 9th stage of soul cultivation. (+30 max Hunger, +330 max SF at lvl 78, 81, 84, 87; +20% to max SF)")
 				.withBuffs({'wis.mult':0.15});
 		public static const SoulWarrior:PerkType = mk("Soul Warrior", "Soul Warrior",
 				"You have reached 3rd stage of soul cultivation. (+20 max Hunger, +60 max SF at lvl 18, 21, 24; +10% to max SF)")
@@ -3588,6 +3584,11 @@ public class PerkLib
 				"Allows access to a cave wyrm azureflame breath attack.");
 		public static const Androgyny:PerkType = mk("Androgyny", "Androgyny",
 				"No gender limits on facial masculinity or femininity.");
+		public static const AntyDexterity:PerkType = mk("Anty-Dexterity", "Anty-Dexterity",
+				"Strong ant arms boost your strength and allow wielding dual weapons <i>or</i> large weapons.")
+				.withBuffs({'str.mult':0.25});
+		public static const AntOvipositor:PerkType = mk("Ant Ovipositor", "Ant Ovipositor",
+				"Allows you to lay eggs through a special organ on your insect abdomen, though you need at least 10 eggs to lay.");
 		public static const AquaticAffinity:PerkType = mk("Aquatic Affinity", "Aquatic Affinity",
 				"When in an aquatic battle you gains a +30 to strength and speed.");
 		public static const AvatorOfCorruption:PerkType = mk("Avatar of Corruption", "Avatar of Corruption",
@@ -6250,40 +6251,22 @@ public class PerkLib
             //Tier 3
             //2nd perk for flying swords slots
             //Tier 4
-            /*SoulSprite.requirePerks(SoulWarrior, HclassHeavenTribulationSurvivor)
-					.requireWis(100)
-                    .requireLevel(27);*/
             FleshBodyWarriorStage.requireLevel(24)
                     .requirePerk(FleshBodyApprenticeStage);
             //Tier 5
 			//Tier 6
-            /*SoulScholar.requirePerk(SoulSprite)
-                    .requireWis(140)
-                    .requireLevel(36);
             //Tier 7
-            SoulElder.requirePerk(SoulScholar)
-                    .requireWis(160)
-                    .requireLevel(45);
             //Tier 8
             //Tier 9
-            SoulExalt.requirePerks(SoulElder, GclassHeavenTribulationSurvivor)
-                    .requireWis(200)
-                    .requireLevel(54);*/
             //Tier 10
             FleshBodyElderStage.requireLevel(60)
                     .requirePerk(FleshBodyWarriorStage);
             //Tier 11
-            /*SoulOverlord.requirePerk(SoulExalt)
-                    .requireWis(240)
-                    .requireLevel(66);
             //Tier 12
             //Tier 13
-            SoulTyrant.requirePerks(SoulOverlord, FclassHeavenTribulationSurvivor)
-                    .requireWis(280)
-					.requireLevel(78);
             //Tier 14
             //Tier 15
-     		SoulKing.requirePerk(SoulTyrant)
+     		/*SoulKing.requirePerk(SoulTyrant, FclassHeavenTribulationSurvivor)
                     .requireWis(320)
                     .requireLevel(90);*/
             //Tier 16

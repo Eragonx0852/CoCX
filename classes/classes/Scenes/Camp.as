@@ -47,6 +47,7 @@ public class Camp extends NPCAwareContent{
 	public var codex:Codex = new Codex();
 	public var questlog:Questlog = new Questlog();
 	public var soulforce:Soulforce = new Soulforce();
+	public var testmenu:TestMenu = new TestMenu();
 	public var Magnolia:MagnoliaFollower = new MagnoliaFollower();
 	public var HolliPure:HolliPureScene = new HolliPureScene();
 
@@ -245,6 +246,9 @@ public class Camp extends NPCAwareContent{
 			SceneLib.tyrania.unlockingCorruptLegendariesOption();
 			return;
 		}
+	//	if ((model.time.hours >= 7 && model.time.hours <= 9) && flags[kFLAGS.AMILY_AFFECTION] >= 40 && flags[kFLAGS.AMILY_FOLLOWER] == 1 && AbandonedTownRebuilt.RebuildStarted = false) {
+			//
+	//	}
 		if (marbleScene.marbleFollower()) {
 			//Cor < 50
 			//No corrupt: Jojo, Amily, or Vapula
@@ -1057,7 +1061,7 @@ public class Camp extends NPCAwareContent{
 		if (slavesCount() > 0) addButton(7, "Slaves", campSlavesMenu).hint("Check up on any slaves you have received and interact with them.");
 		addButton(8, "Camp Actions", campActions).hint("Read your codex, questlog or interact with the [camp] surroundings.");
 		if (flags[kFLAGS.CAMP_CABIN_PROGRESS] >= 10 || flags[kFLAGS.CAMP_BUILT_CABIN] >= 1) addButton(9, "Enter Cabin", cabinProgress.initiateCabin).hint("Enter your cabin."); //Enter cabin for furnish.
-		if (player.hasPerk(PerkLib.JobSoulCultivator) || debug) addButton(10, "Soulforce", soulforce.accessSoulforceMenu).hint("Spend some time on the cultivation, or spend some of the soulforce.");
+		if (player.hasPerk(PerkLib.JobSoulCultivator)) addButton(10, "Soulforce", soulforce.accessSoulforceMenu).hint("Spend some time on the cultivation, or spend some of the soulforce.");
 		else if (!player.hasPerk(PerkLib.JobSoulCultivator) && player.hasPerk(PerkLib.Metamorph)) addButton(10, "Metamorph", SceneLib.metamorph.openMetamorph).hint("Use your soulforce to mold your body.");
 		if (player.lust >= 30) {
 			addButton(11, "Masturbate", SceneLib.masturbation.masturbateMenu);
@@ -1071,6 +1075,7 @@ public class Camp extends NPCAwareContent{
 				addButtonDisabled(12, "Sleep", "Try as you may you cannot find sleep tonight. The damn moon won't let you rest as your urges to hunt and fuck are on the rise.");
 			}
 		}
+		if (!CoC.instance.lockCheats) addButton(14, "Cheats", testmenu.SoulforceCheats1).hint("This should be obvious. ^^");//block this option at each public version
 
 		//Remove buttons according to conditions.
 		if (isNightTime) {
@@ -1078,7 +1083,7 @@ public class Camp extends NPCAwareContent{
 				if (nightTimeActiveFollowers() == 0) removeButton(5); //Followers
 				if (nightTimeActiveLovers() == 0) removeButton(6); //Lovers
 				if (nightTimeActiveSlaves() == 0) removeButton(7); //Slaves
-				removeButton(8); //Camp Actions
+				//removeButton(8); //Camp Actions, removing this to change it further down
 			}
 		}
 		//Update saves
@@ -2089,24 +2094,19 @@ public class Camp extends NPCAwareContent{
 		menu();
 		clearOutput();
 		outputText("What would you like to do?");
-		addButton(0, "Build", campBuildingSim).hint("Check your [camp] build options.");
-		if (player.hasPerk(PerkLib.JobElementalConjurer) || player.hasPerk(PerkLib.JobGolemancer) || player.hasPerk(PerkLib.PrestigeJobNecromancer)) addButton(1, "Winions", campWinionsArmySim).hint("Check your options for making some Winions.");
-		else addButtonDisabled(1, "Winions", "You need to be able to make some minions that fight for you to use this option.");
+		addButton(0, "Build", campBuildingSim).hint("Check your [camp] build options.").disableIf(isNightTime,"It's too dark for that!");
+		addButton(1, "Winions", campWinionsArmySim).hint("Check your options for making some Winions.").disableIf((!player.hasPerk(PerkLib.JobElementalConjurer) && !player.hasPerk(PerkLib.JobGolemancer) && !player.hasPerk(PerkLib.PrestigeJobNecromancer)), "You need to be able to make some minions that fight for you to use this option.");
 		addButton(2, "Misc", campMiscActions).hint("Misc options to do things in and around [camp].");
 		addButton(3, "Spend Time", campSpendTimeActions).hint("Check your options to spend time in and around [camp].");
 		addButton(4, "NPC's", SparrableNPCsMenu);
 		//addButton(5, "Craft", kGAMECLASS.crafting.accessCraftingMenu).hint("Craft some items.");
-		if (player.hasStatusEffect(StatusEffects.CampRathazul)) addButton(7, "Herbalism", HerbalismMenu).hint("Use ingrediants to craft poultrice and battle medicines.")
-		else addButtonDisabled(7, "Herbalism", "Would you kindly find Rathazul first?");
-		if (Crafting.BagSlot01Cap > 0) addButton(8, "Materials", SceneLib.crafting.accessCraftingMaterialsBag).hint("Manage your bag with crafting materials.");
-		else addButtonDisabled(8, "Materials", "You have to find bag for materials.");
-		if (AdventurerGuild.Slot01Cap > 0) addButton(9, "Quest Loot", questItemsBag).hint("Manage your bag with quest items.");
-		else addButtonDisabled(9, "Quest Loot", "You have to join Adventure Guild to have bag for quest items.");
+		addButton(7, "Herbalism", HerbalismMenu).hint("Use ingrediants to craft poultrice and battle medicines.").disableIf(isNightTime,"It's too dark to do any gardening!").disableIf(!player.hasStatusEffect(StatusEffects.CampRathazul),"Would you kindly find Rathazul first?");
+		addButton(8, "Materials", SceneLib.crafting.accessCraftingMaterialsBag).hint("Manage your bag with crafting materials.").disableIf(Crafting.BagSlot01Cap <= 0, "You'll need a bag to do that.");
+		addButton(9, "Quest Loot", SceneLib.adventureGuild.questItemsBag).hint("Manage your bag with quest items.").disableIf(AdventurerGuild.Slot01Cap <= 0, "Join the Adventure Guild for a quest bag!");
 		addButton(10, "Questlog", questlog.accessQuestlogMainMenu).hint("Check your questlog.");
 		addButton(11, "Recall", sceneHunter.recallScenes).hint("Recall some of the unique events happened during your adventure.");
-		if (player.explored >= 1) addButton(12, "Dummy", DummyTraining).hint("Train your mastery level on this dummy.");
-		if (flags[kFLAGS.LETHICE_DEFEATED] > 0) addButton(13, "Ascension", promptAscend).hint("Perform an ascension? This will restart your adventures with your items, and gems carried over. The game will also get harder.");
-		else addButtonDisabled(13, "Ascension", "Don't you have a job to finish first. Like... to defeat someone, maybe Lethice?");
+		if (player.explored >= 1) addButton(12, "Dummy", DummyTraining).hint("Train your mastery level on this dummy.").disableIf(isNightTime,"It's too dark for that!");
+		addButton(13, "Ascension", promptAscend).hint("Perform an ascension? This will restart your adventures with your items, and gems carried over. The game will also get harder.").disableIf(flags[kFLAGS.LETHICE_DEFEATED] <= 0, "Don't you have a job to finish first? Like... to defeat someone, maybe Lethice?");
 		addButton(14, "Back", playerMenu);
 	}
 
@@ -2116,14 +2116,16 @@ public class Camp extends NPCAwareContent{
 		addButton(1, "ExaminePortal", examinePortal).hint("Examine the portal. This scene is placeholder.", "Examine Portal"); //Examine portal.
 		if (model.time.hours == 19) {
 			addButton(2, "Watch Sunset", watchSunset).hint("Watch the sunset and relax."); //Relax and watch at the sunset.
-		} else if (model.time.hours >= 20 && flags[kFLAGS.LETHICE_DEFEATED] > 0) {
+		} else if ((model.time.hours >= 20 || model.time.hours <= 5) && flags[kFLAGS.LETHICE_DEFEATED] > 0) {
 			addButton(2, "Stargaze", watchStars).hint("Look at the starry night sky."); //Stargaze. Only available after Lethice is defeated.
 		} else {
-			addButtonDisabled(2, "Watch Sky", "The option to watch sunset is available at 7pm.");
+			if (flags[kFLAGS.LETHICE_DEFEATED] == 0) addButtonDisabled(2, "Watch Sky", "The option to watch sunset is available at 7pm.");
+			else addButtonDisabled(2, "Watch Sky", "The option to watch sunset is available at 7pm, \n\nStargazing 8pm-5am.");
 		}
 		addButton(3, "Read Codex", codex.accessCodexMenu).hint("Read any codex entries you have unlocked.");
 		if (player.hasKeyItem("Gryphon Statuette") >= 0) addButton(9, "Gryphon", useGryphonStatuette);
 		if (player.hasKeyItem("Peacock Statuette") >= 0) addButton(9, "Peacock", usePeacockStatuette);
+		if (player.hasKeyItem("Gryphon Statuette") == 0 && player.hasKeyItem("Peacock Statuette") == 0) addButtonDisabled(9, "???", "Perhaps if you had a magical statuette...");
 		addButton(14, "Back", campActions);
 	}
 
@@ -2175,14 +2177,16 @@ public class Camp extends NPCAwareContent{
 		else addButtonDisabled(1, "Ward", "Would you kindly install it first?");
 		if (flags[kFLAGS.CAMP_UPGRADES_KITSUNE_SHRINE] >= 4) addButton(2, "Kitsune Shrine", campScenes.KitsuneShrine).hint("Meditate at [camp] Kitsune Shrine.");
 		else addButtonDisabled(2, "Kitsune Shrine", "Would you kindly build it first?");
-		if (flags[kFLAGS.CAMP_UPGRADES_HOT_SPRINGS] >= 4) addButton(3, "Hot Spring", campScenes.HotSpring).hint("Visit Hot Spring.");
+		if (flags[kFLAGS.CAMP_UPGRADES_HOT_SPRINGS] >= 4) addButton(3, "Hot Spring", campScenes.HotSpring).hint("Visit Hot Spring.").disableIf(isNightTime,"It's not safe to take a dip in the hotsprings at night.");
 		else addButtonDisabled(3, "Hot Spring", "Would you kindly build it first?");
-		if (player.hasPerk(PerkLib.CursedTag)) addButton(4, "AlterBindScroll", AlterBindScroll).hint("Alter Bind Scroll - DIY aka modify your cursed tag");
+		if (player.hasPerk(PerkLib.CursedTag)) addButton(4, "AlterBindScroll", AlterBindScroll).hint("Alter Bind Scroll - DIY aka modify your cursed tag").disableIf(isNightTime, "It's too dark to modify your scroll.");
 		else addButtonDisabled(4, "Alter Bind Scroll", "Req. to be Jiangshi and having Cursed Tag perk.");
 		if (player.hasItem(consumables.LG_SFRP, 10) && (player.hasItem(useables.E_P_BOT, 1))) addButton(5, "Fill bottle", fillUpPillBottle00).hint("Fill up one of your pill bottles with low-grade soulforce recovery pills.");
 		else addButtonDisabled(5, "Fill bottle", "You need one empty pill bottle and ten low-grade soulforce recovery pills.");
 		if (player.hasItem(consumables.MG_SFRP, 10) && (player.hasItem(useables.E_P_BOT, 1))) addButton(6, "Fill bottle", fillUpPillBottle01).hint("Fill up one of your pill bottles with mid-grade soulforce recovery pills.");
 		else addButtonDisabled(6, "Fill bottle", "You need one empty pill bottle and ten mid-grade soulforce recovery pills.");
+		if (player.hasItem(consumables.HG_SFRP, 10) && (player.hasItem(useables.E_P_BOT, 1))) addButton(7, "Fill bottle", fillUpPillBottle02).hint("Fill up one of your pill bottles with high-grade soulforce recovery pills.");
+		else addButtonDisabled(7, "Fill bottle", "You need one empty pill bottle and ten high-grade soulforce recovery pills.");
 		if (player.hasPerk(PerkLib.FclassHeavenTribulationSurvivor)) addButton(10, "Clone", VisitClone).hint("Check on your clone.");
 		else addButtonDisabled(10, "Clone", "Would you kindly go face F class Heaven Tribulation first?");
 		if (player.hasItem(useables.ENECORE, 1) && flags[kFLAGS.CAMP_CABIN_ENERGY_CORE_RESOURCES] < 200) addButton(12, "E.Core", convertingEnergyCoreIntoFlagValue).hint("Convert Energy Core item into flag value.");
@@ -2783,102 +2787,12 @@ public class Camp extends NPCAwareContent{
 		player.destroyItems(consumables.MG_SFRP, 10);
 		inventory.takeItem(consumables.MGSFRPB, campMiscActions);
 	}
-
-	private function questItemsBag():void {
+	private function fillUpPillBottle02():void {
 		clearOutput();
-		outputText("Would you like to put some quest items into the bag, and if so, with ones?\n\n");
-		if (AdventurerGuild.Slot01Cap > 0) outputText("<b>Imp Skulls:</b> "+AdventurerGuild.Slot01+" / "+AdventurerGuild.Slot01Cap+"\n");
-		if (AdventurerGuild.Slot02Cap > 0) outputText("<b>Feral Imp Skulls:</b> "+AdventurerGuild.Slot02+" / "+AdventurerGuild.Slot02Cap+"\n");
-		if (AdventurerGuild.Slot03Cap > 0) outputText("<b>Minotaur Horns:</b> "+AdventurerGuild.Slot03+" / "+AdventurerGuild.Slot03Cap+"\n");
-		if (AdventurerGuild.Slot04Cap > 0) outputText("<b>Demon Skulls:</b> "+AdventurerGuild.Slot04+" / "+AdventurerGuild.Slot04Cap+"\n");
-		if (AdventurerGuild.Slot05Cap > 0) outputText("<b>Severed Tentacles:</b> "+AdventurerGuild.Slot05+" / "+AdventurerGuild.Slot05Cap+"\n");
-		menu();
-		if (AdventurerGuild.Slot01 < AdventurerGuild.Slot01Cap) {
-			if (player.hasItem(useables.IMPSKLL, 1)) addButton(0, "ImpSkull", questItemsBagImpSkull1UP);
-			else addButtonDisabled(0, "ImpSkull", "You not have any imp skulls to store.");
-		}
-		else addButtonDisabled(0, "ImpSkull", "You can't store more imp skulls in your bag.");
-		if (AdventurerGuild.Slot01 > 0) addButton(1, "ImpSkull", questItemsBagImpSkull1Down);
-		else addButtonDisabled(1, "ImpSkull", "You not have any imp skulls in your bag.");
-		if (AdventurerGuild.Slot02 < AdventurerGuild.Slot02Cap) {
-			if (player.hasItem(useables.FIMPSKL, 1)) addButton(2, "FeralImpS.", questItemsBagFeralImpSkull1Up);
-			else addButtonDisabled(2, "FeralImpS.", "You not have any feral imp skulls to store.");
-		}
-		else addButtonDisabled(2, "FeralImpS.", "You can't store more feral imp skulls in your bag.");
-		if (AdventurerGuild.Slot02 > 0) addButton(3, "FeralImpS.", questItemsBagFeralImpSkull1Down);
-		else addButtonDisabled(3, "FeralImpS.", "You not have any feral imp skulls in your bag.");
-		if (AdventurerGuild.Slot03 < AdventurerGuild.Slot03Cap) {
-			if (player.hasItem(useables.MINOHOR, 1)) addButton(5, "MinoHorns", questItemsBagMinotaurHorns1Up);
-			else addButtonDisabled(5, "MinoHorns", "You not have any minotaur horns to store.");
-		}
-		else addButtonDisabled(5, "MinoHorns", "You can't store more minotaur horns in your bag.");
-		if (AdventurerGuild.Slot03 > 0) addButton(6, "MinoHorns", questItemsBagMinotaurHorns1Down);
-		else addButtonDisabled(6, "MinoHorns", "You not have any minotaur horns in your bag.");
-		if (AdventurerGuild.Slot04 < AdventurerGuild.Slot04Cap) {
-			if (player.hasItem(useables.DEMSKLL, 1)) addButton(7, "DemonSkull", questItemsBagDemonSkull1Up);
-			else addButtonDisabled(7, "DemonSkull", "You not have any demon skulls to store.");
-		}
-		else addButtonDisabled(7, "DemonSkull", "You can't store more demon skulls in your bag.");
-		if (AdventurerGuild.Slot04 > 0) addButton(8, "DemonSkull", questItemsBagDemonSkull1Down);
-		else addButtonDisabled(8, "DemonSkull", "You not have any demon skulls in your bag.");
-		if (AdventurerGuild.Slot05 < AdventurerGuild.Slot05Cap) {
-			if (player.hasItem(useables.SEVTENT, 1)) addButton(10, "SeveredTent", questItemsBagSeveredTentacle1Up);
-			else addButtonDisabled(10, "SeveredTent", "You not have any severed tentacles to store.");
-		}
-		else addButtonDisabled(10, "SeveredTent", "You can't store more severed tentacles in your bag.");
-		if (AdventurerGuild.Slot05 > 0) addButton(11, "SeveredTent", questItemsBagSeveredTentacle1Down);
-		else addButtonDisabled(11, "SeveredTent", "You not have any severed tentacles in your bag.");
-		addButton(14, "Back", campActions);
-	}
-	private function questItemsBagImpSkull1UP():void {
-		player.destroyItems(useables.IMPSKLL, 1);
-		AdventurerGuild.Slot01 += 1;
-		doNext(questItemsBag);
-	}
-	private function questItemsBagImpSkull1Down():void {
-		outputText("\n");
-		AdventurerGuild.Slot01 -= 1;
-		inventory.takeItem(useables.IMPSKLL, questItemsBag);
-	}
-	private function questItemsBagFeralImpSkull1Up():void {
-		player.destroyItems(useables.FIMPSKL, 1);
-		AdventurerGuild.Slot02 += 1;
-		doNext(questItemsBag);
-	}
-	private function questItemsBagFeralImpSkull1Down():void {
-		outputText("\n");
-		AdventurerGuild.Slot02 -= 1;
-		inventory.takeItem(useables.FIMPSKL, questItemsBag);
-	}
-	private function questItemsBagMinotaurHorns1Up():void {
-		player.destroyItems(useables.MINOHOR, 1);
-		AdventurerGuild.Slot03 += 1;
-		doNext(questItemsBag);
-	}
-	private function questItemsBagMinotaurHorns1Down():void {
-		outputText("\n");
-		AdventurerGuild.Slot03 -= 1;
-		inventory.takeItem(useables.MINOHOR, questItemsBag);
-	}
-	private function questItemsBagDemonSkull1Up():void {
-		player.destroyItems(useables.DEMSKLL, 1);
-		AdventurerGuild.Slot04 += 1;
-		doNext(questItemsBag);
-	}
-	private function questItemsBagDemonSkull1Down():void {
-		outputText("\n");
-		AdventurerGuild.Slot04 -= 1;
-		inventory.takeItem(useables.DEMSKLL, questItemsBag);
-	}
-	private function questItemsBagSeveredTentacle1Up():void {
-		player.destroyItems(useables.SEVTENT, 1);
-		AdventurerGuild.Slot05 += 1;
-		doNext(questItemsBag);
-	}
-	private function questItemsBagSeveredTentacle1Down():void {
-		outputText("\n");
-		AdventurerGuild.Slot05 -= 1;
-		inventory.takeItem(useables.SEVTENT, questItemsBag);
+		outputText("You pick up one of your empty pills bottle and starts to put in some of your loose high-grade soulforce recovery pills. Then you close the bottle and puts into backpack.");
+		player.destroyItems(useables.E_P_BOT, 1);
+		player.destroyItems(consumables.HG_SFRP, 10);
+		inventory.takeItem(consumables.HGSFRPB, campMiscActions);
 	}
 
 	private function VisitClone():void {
@@ -3222,7 +3136,7 @@ public class Camp extends NPCAwareContent{
 		clearOutput();
 		outputText("You look around to make sure no one is looking then you smirk and you can feel yourself peeing. When you're done, you swim away.  ");
 		if (rand(prankRoll) == 0 && camp.izmaFollower() && !pranked && izmaJoinsStream) {
-			outputText("\n\nIzma just swims over, unaware of the warm spot you just created. \"<i>Who've pissed in the stream?</i>\" she growls. You swim over to her and tell her that you admit you did pee in the stream. \"<i>Oh, alpha! What a naughty alpha you are,</i>\" she grins, her shark-teeth clearly visible.");
+			outputText("\n\nIzma just swims over, unaware of the warm spot you just created. \"<i>Who pissed in the stream?</i>\" she growls. You swim over to her and admit to her that you admit you did pee in the stream. \"<i>Oh, alpha! What a naughty alpha you are,</i>\" she grins, her shark-teeth clearly visible.");
 			pranked = true;
 		}
 		if (rand(prankRoll) == 0 && (camp.followerHel() && flags[kFLAGS.HEL_CAN_SWIM]) && !pranked && heliaJoinsStream) {
@@ -3279,7 +3193,7 @@ public class Camp extends NPCAwareContent{
 	private function watchSunset():void {
 		clearOutput();
 		outputText(images.showImage("camp-watch-sunset"));
-		outputText("You pick a location where the sun is clearly visible from that particular spot and sit down. The sun is just above the horizon, ready to set. It's such a beautiful view. \n\n");
+		outputText("You pick a location where the sun is clearly visible from and sit down. The sun is just above the horizon, ready to set. It's such a beautiful view. \n\n");
 		var randText:Number = rand(3);
 		//Childhood nostalgia GO!
 		if (randText == 0) {
@@ -3313,7 +3227,7 @@ public class Camp extends NPCAwareContent{
 		}
 		//Greatest moments GO!
 		if (randText >= 2) {
-			outputText("You think of what you'd like to ");
+			outputText("You think of what you wanted like to ");
 			if (rand(2) == 0) outputText("do");
 			else outputText("accomplish");
 			outputText(" before you went through the portal. You felt a bit sad that you didn't get to achieve your old goals.");

@@ -997,7 +997,7 @@ use namespace CoC;
 			menu();
 			addButton(0, "Grow Breasts", chooseBreasts).hint("Grow a new pair of breasts if flat-chested or grow existing breasts. \n\nAnd receive something else.");
 			addButton(1, "Grow Dick", chooseDick).hint("Grow a new penis. Somehow, you have a feeling that the new cock you'll receive won't be a normal cock. \n\nAnd receive something else.");
-			addButton(2, "Normal Face", normalFace).hint("Normalize your face. This will also remove your horns or antennae.type and change your ears back to human ears! \n\nAnd receive something else.");
+			addButton(2, "Normal Face", normalFace).hint("Normalize your face. This will also remove your horns or [antennae] and change your ears back to human ears! \n\nAnd receive something else.");
 			addButton(3, "Normal Chest", normalChest).hint("Normalize your chest. This will shrink breasts larger than E-cup to a reasonable size and remove their other unusual traits, if you have it. This will also change your skin to human skin. \n\nAnd receive something else.");
 			addButton(4, "Normal Groin", normalGroin).hint("Normalize your groin, removing any extra cocks and reset remaining cock to normal, if you have any. Or grow genitalia for genderless. \n\nAnd receive something else.");
 			addButton(5, "Normal Legs", normalLegs).hint("Turn your legs back to normal. This will also remove your tail, if you have any! \n\nAnd receive something else.");
@@ -1165,7 +1165,7 @@ use namespace CoC;
 				changes++;
 			}
 			if(!player.skin.hasPlainSkinOnly()) {
-				outputText("The skin on your body itches intensely as it sheds it's [skin.type], revealing " + player.skinTone + " skin.  ");
+				outputText("The skin on your body itches intensely as it sheds it's [skin.type], revealing " + player.skinColor + " skin.  ");
 				player.skin.restore();
 				changes++;
 			}
@@ -1712,10 +1712,10 @@ use namespace CoC;
 			clearOutput();
 			outputText("<b><u>Furnace Room</u></b>\n");
 			if(flags[kFLAGS.FACTORY_SHUTDOWN] <= 0) {
-				outputText("The air inside this room is hot enough to coat your " + player.skinTone + " [skin.type] in a fine sheen of sweat.  The eastern side of the chamber is more machine than wall, a solid mass of iron piping covered in small metal blast-doors through which fuel is to be fed.  A small transparent plate is riveted into the wall, allowing you to see some kind of pink crystalline fuel being burned by purple-white fire.  The few visible controls and gauges don't seem to be linked into anything important, and the machinery looks far too durable to damage with what you have.  The only exit is a heavy iron door on the west wall.  ");
+				outputText("The air inside this room is hot enough to coat your [color] [skin.type] in a fine sheen of sweat.  The eastern side of the chamber is more machine than wall, a solid mass of iron piping covered in small metal blast-doors through which fuel is to be fed.  A small transparent plate is riveted into the wall, allowing you to see some kind of pink crystalline fuel being burned by purple-white fire.  The few visible controls and gauges don't seem to be linked into anything important, and the machinery looks far too durable to damage with what you have.  The only exit is a heavy iron door on the west wall.  ");
 			}
 			else {
-				outputText("Despite the machinery being shut down, the air in this room is still hot enough to coat your " + player.skinTone + " [skin.type] in a fine sheen of sweat.  The eastern side of the chamber is more machine than wall, a solid mass of iron piping covered in small metal blast-doors through which fuel is to be fed.  A small transparent plate is riveted into the wall, allowing you to see some the ashes of a previous fuel source.  The few visible controls and gauges don't seem to be linked into anything important, and the machinery looks far too durable to damage with what you have.  The only exit is a heavy iron door on the west wall.  ");
+				outputText("Despite the machinery being shut down, the air in this room is still hot enough to coat your [color] [skin.type] in a fine sheen of sweat.  The eastern side of the chamber is more machine than wall, a solid mass of iron piping covered in small metal blast-doors through which fuel is to be fed.  A small transparent plate is riveted into the wall, allowing you to see some the ashes of a previous fuel source.  The few visible controls and gauges don't seem to be linked into anything important, and the machinery looks far too durable to damage with what you have.  The only exit is a heavy iron door on the west wall.  ");
 			}
 			dungeons.setDungeonButtons(null, null, roomPumpRoom, null);
 
