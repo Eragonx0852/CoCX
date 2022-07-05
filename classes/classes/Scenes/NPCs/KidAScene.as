@@ -564,7 +564,7 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 			addButton(14,"Back", approachAnemoneBarrel);
 		}
 
-		private function kidASex(cont:Boolean = true):Boolean
+		private function kidASex(cont:Boolean = true):void
 		{
 			if (!cont) {
 				clearOutput();
