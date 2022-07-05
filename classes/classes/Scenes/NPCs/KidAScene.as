@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by aimozg on 02.01.14.
  */
 package classes.Scenes.NPCs
@@ -187,12 +187,12 @@ public class KidAScene extends BaseContent implements TimeAwareInterface
 				else if (player.fatigue > (player.maxFatigue() - 25)) outputText("\n\nYou're too tired to tutor Kid A.");
 				addButton(4, "Watch", anemoneWatchToggle);
 				addButton(8, "Evict", evictANemone);
-				addButton(2, "Sex", kidASex, false)
+				addButton(2, "Sex", kidASexMenu, false)
 					.disableIf(player.lust < 33, "You aren't aroused enough to have sex with her right now.")
 					.disableIf(!sexPossible(), "You need a vagina or a fitting (60) dick to have sex with her.")
 					.disableIf(kidAXP() < 40, "Kid A isn't self-confident enough to have sex with right now...  Perhaps if you could tutor her with a weapon she seems to agree with?")
 					.disableIf(!flags[kFLAGS.HAD_KID_A_DREAM] || flags[kFLAGS.ANEMONE_KID] < 2, "", "???");
-							else addButton(2, "Masturbation", kidAMasturbation);
+				addButton(3, "Masturbation", kidAMasturbation);
 			}
 			addButton(14, "Back", inventory.stash);
 		}
