@@ -7,7 +7,6 @@ import classes.BodyParts.LowerBody;
 import classes.BodyParts.Skin;
 import classes.BodyParts.Tail;
 import classes.BodyParts.Wings;
-import classes.EngineCore;
 import classes.GlobalFlags.kFLAGS;
 import classes.IMutations.*;
 import classes.Scenes.SceneLib;
@@ -24,7 +23,7 @@ public class Kiha extends Monster
 		private function sillyModeKihaAttack():void {
 			outputText("Before you can stop to think, the dragon-woman steps back - throwing her axe into the air before she starts sprinting towards you. In seconds she's reached a hair's distance between her lithe form and your own, her fist recoiling and time seemingly stopping to allow you to note the powerful energy seeping from her arms.  ");
 			//Miss:
-			if(player.spe - spe > 0 && int(Math.random()*(((player.spe-spe)/4)+80)) > 80) {
+			if(player.speedDodge(this)>0) {
 				outputText("You take the opportunity to walk away, watching the slow-motion attack unravel before you; the fire bursts from her knuckle in the shape of a bird in flight, wings unfurled.  ");
 				if(rand(2) == 0) outputText("You only owned an XJasun back home, so you don't really understand the reference.");
 				else outputText("You stifle a laugh as your memories turn to many an evening spent with your friends in front of your SharkCube console, contesting each other in games of ridiculous, stylized combat.");
@@ -57,7 +56,7 @@ public class Kiha extends Monster
 			outputText("The draconic girl throws her trusty weapon into the sodden ground, using the distraction to build up balls of flame around her fists.  She runs towards you, launching herself in your direction with a flurry of punches.\n");
 
 			//Dodged
-			if(player.spe - spe > 0 && int(Math.random()*(((player.spe-spe)/4)+80)) > 80) {
+			if(player.speedDodge(this)>0) {
 				outputText("You manage to jump to the side, intense heat rushing past you as you narrowly avoid her advance.  You twist around, finding that she's reunited with her axe and angrier than before.");
 			}
 			//Determine if evaded
@@ -351,6 +350,7 @@ public class Kiha extends Monster
 			this.lustVuln = 0.4;
 			this.temperment = TEMPERMENT_LUSTY_GRAPPLES;
 			this.gems = rand(15) + 95;
+			this.noFetishDrop = true;
 			this.drop = new ChainedDrop().add(useables.D_SCALE, 0.2);
 			this.wings.type = Wings.DRACONIC_LARGE;
 			this.wings.desc = "huge";

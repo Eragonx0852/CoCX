@@ -3,9 +3,9 @@
  */
 package classes.Items
 {
-	import classes.PerkLib;
+import classes.PerkLib;
 
-	public class Armor extends Useable //Equipable
+public class Armor extends Useable //Equipable
 	{
 		private var _def:Number;
 		private var _mdef:Number;
@@ -13,6 +13,10 @@ package classes.Items
 		private var _name:String;
 		private var _supportsBulge:Boolean;
 		private var _supportsUndergarment:Boolean;
+		
+		override public function get category():String {
+			return CATEGORY_ARMOR;
+		}
 		
 		public function Armor(id:String, shortName:String, name:String, longName:String, def:Number, mdef:Number, value:Number = 0, description:String = null, perk:String = "", supportsBulge:Boolean = false, supportsUndergarment:Boolean = true) {
 			super(id, shortName, longName, value, description);
@@ -62,6 +66,10 @@ package classes.Items
 		}
 		
 		override public function canUse():Boolean {
+			if (game.player.armor.cursed) {
+				outputText("You cannot replace "+game.player.armor.name+"!");
+				return false;
+			}
 			if (!this.supportsUndergarment && (game.player.upperGarment != UndergarmentLib.NOTHING || game.player.lowerGarment != UndergarmentLib.NOTHING)) {
 				var output:String = "";
 				var wornUpper:Boolean = false;
@@ -100,6 +108,12 @@ package classes.Items
 			game.player.removePerk(PerkLib.BulgeArmor); //Exgartuan check
 			if (game.player.modArmorName.length > 0) game.player.modArmorName = "";
 			return this;
+		}
+		// Called after player equips the armor.
+		public function afterEquip():void {
+		}
+		// Called after player unequips the armor.
+		public function afterUnequip():void {
 		}
 		
 		public function removeText():void {} //Produces any text seen when removing the armor normally

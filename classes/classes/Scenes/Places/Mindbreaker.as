@@ -1,26 +1,23 @@
 package classes.Scenes.Places{
-	import classes.*;
-	import classes.BodyParts.Antennae;
-	import classes.BodyParts.Arms;
-	import classes.BodyParts.Ears;
-	import classes.BodyParts.Eyes;
-	import classes.BodyParts.Face;
-	import classes.BodyParts.Hair;
-	import classes.BodyParts.Horns;
-	import classes.BodyParts.LowerBody;
-	import classes.BodyParts.RearBody;
-	import classes.BodyParts.Skin;
-	import classes.BodyParts.Tail;
-	import classes.BodyParts.Tongue;
-	import classes.BodyParts.Wings;
-	import classes.GlobalFlags.kFLAGS;
-	import classes.Items.Armors.Nothing;
-	import classes.Scenes.Areas.Forest.WoodElvesHuntingParty;
-	import classes.Scenes.SceneLib;
-	import classes.internals.SaveableState;
-	import classes.CoC;
+import classes.*;
+import classes.BodyParts.Antennae;
+import classes.BodyParts.Arms;
+import classes.BodyParts.Ears;
+import classes.BodyParts.Eyes;
+import classes.BodyParts.Face;
+import classes.BodyParts.Hair;
+import classes.BodyParts.Horns;
+import classes.BodyParts.LowerBody;
+import classes.BodyParts.RearBody;
+import classes.BodyParts.Skin;
+import classes.BodyParts.Tail;
+import classes.BodyParts.Tongue;
+import classes.BodyParts.Wings;
+import classes.GlobalFlags.kFLAGS;
+import classes.Scenes.Areas.Forest.WoodElvesHuntingParty;
+import classes.internals.SaveableState;
 
-	public class Mindbreaker extends BaseContent implements SaveableState{
+public class Mindbreaker extends BaseContent implements SaveableState{
 
 		public static var MindBreakerQuest:int;
 		public static const QUEST_STAGE_MBOFF:int = -1;
@@ -128,7 +125,7 @@ package classes.Scenes.Places{
 					" It’s just a matter of steeling your nerves and venturing forth. But still… maybe this time you should listen to your instincts? Is whatever that resides within worth what you could encounter?" +
 					"\n\nDo you continue?" +
 					"\n\n<b><u>-Warning-\n" +
-					" -Content in this cave is not for everyone. It includes mind break, tentacles, parasitism, severe slutification and PERNAMENT TRANSFORMATION. Proceed at your own risk.</u></b>\n");
+					" -Content in this cave is not for everyone. It includes mind break, tentacles, parasitism, severe slutification and PERMANENT TRANSFORMATION. Proceed at your own risk.</u></b>\n");
 			//[Yes] [No]
 			doYesNo(YesTentacle,FuckNo);
 		}
@@ -446,6 +443,8 @@ package classes.Scenes.Places{
 			if (player.hasPerk(PerkLib.BroBody)) player.removePerk(PerkLib.BroBody);
 			player.createPerk(PerkLib.Insanity,0,0,0,0);
 			player.createPerk(PerkLib.TransformationImmunityAtlach,0,0,0,0);
+			if (player.hasPerk(PerkLib.RacialParagon))
+				flags[kFLAGS.APEX_SELECTED_RACE] = player.hasVagina()? Races.FMINDBREAKER : Races.MMINDBREAKER;
 			player.createPerk(PerkLib.PsionicEmpowerment,0,0,0,0);
 			player.removeAllRacialMutation();
 			MindBreakerQuest = QUEST_STAGE_ISMB;
@@ -595,7 +594,7 @@ package classes.Scenes.Places{
 			outputText("Now that she mentions it, yes, but the slaves are not what you're interested in right now." +
 					" Kaerb-Dnim blushes at your allusion. You laugh and close in on her, initiating with a sloppy kiss as you drive your tentacle like tongue in her mouth." +
 					" You can feel her tongue moving in and going so far as to your throat however, for obvious reasons, you won’t gag from this." +
-					" You move your tentacles into her ears as she does the same to you. The connection is so perfect, the both of you can hear each other thoughts and desires as if they were your own." +
+					" You move your tentacles into her ears as she does the same to you. The connection is so perfect, both of you can hear each other thoughts and desires as if they were your own." +
 					" You proceed to fuck each other brains for a few minutes, your vaginal walls opening to the tentacles coming from deep down in your womb as you proceed to fuck her snatch with your tentacled pussy, making the other mindflayer coo in delight, as your wet vaginal tentacles tie together into a perfectly shaped penis." +
 					" You fuck Kaerb-Dnim’s delicious pussy for several minutes, slimy green juice drooling from the your snatches. Eventually Kaerb-Dnim’s own pussy tentacles react and tie with your own, connecting your pussies together." +
 					" Your eyes roll back and you moan in pleasure as both of you start to slide along the massive two sided form that has become the mass of your vaginal tentacles." +

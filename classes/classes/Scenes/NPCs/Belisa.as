@@ -17,7 +17,6 @@ import classes.StatusEffects;
 import classes.VaginaClass;
 import classes.Scenes.NPCs.BelisaFollower;
 import classes.Scenes.SceneLib;
-import classes.StatusEffects.Combat.WebDebuff;
 import classes.internals.WeightedDrop;
 
 
@@ -100,7 +99,7 @@ public class Belisa extends Monster
 				outputText("She misses completely due to their blindness.");
 			}
 			//Determine if dodged!
-			else if (player.spe - spe > 0 && int(Math.random() * (((player.spe - spe) / 4) + 80)) > 80) {
+			else if (player.speedDodge(this)>0) {
 				outputText("You dodge away, avoiding the sticky strands!");
 			}
 			//Determine if evaded
@@ -117,18 +116,16 @@ public class Belisa extends Monster
 			}
 			//Got hit
 			else {
-				var web:WebDebuff = player.statusEffectByType(StatusEffects.Web) as WebDebuff;
-				if (web == null) {
+				if (player.buff("Web").isPresent()) {
+					outputText("The silky strands hit you, weighing you down and restricting your movement even further.\n");
+					player.buff("Web").addStats( {"spe":-25} ).withText("Web").combatPermanent();
+				}
+				else {
 					outputText("The silky strands hit you, webbing around you and making it hard to move with any degree of speed.");
 					if (player.canFly()) outputText("  Your wings struggle uselessly in the bindings, no longer able to flap fast enough to aid you.");
 					outputText("\n");
-					web = new WebDebuff();
-					player.addStatusEffect(web);
+					player.buff("Web").addStats( {"spe":-25} ).withText("Web").combatPermanent();
 				}
-				else {
-					outputText("The silky strands hit you, weighing you down and restricting your movement even further.\n");
-				}
-				web.increase();
 			}
 		}
 		

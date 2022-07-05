@@ -34,6 +34,7 @@ import classes.Scenes.NPCs.TyrantiaFollower;
 import classes.Scenes.SceneLib;
 import classes.Stats.StatUtils;
 import classes.StatusEffects;
+import coc.view.ButtonDataList;
 import flash.utils.Dictionary;
 import flash.events.TextEvent;
 
@@ -104,7 +105,7 @@ public class PerkMenu extends BaseContent {
 			outputText("\n<b>You can choose and adjust various misc effects.</b>");
 			addButton(8, "Misc Opt",MiscOption);
 		}
-		addButton (9, "PerkDB2", perkDatabase2); //WIP.
+		//addButton (9, "PerkDB2", perkDatabase2); //WIP. //Apparently conflicts with Racial Score display
 		if (player.statusEffectv1(StatusEffects.SummonedElementals) >= 1) {
 			outputText("\n<b>You can adjust your elemental summons behaviour during combat.</b>");
 			addButton(10, "Elementals",summonsbehaviourOptions);
@@ -867,7 +868,7 @@ public class PerkMenu extends BaseContent {
         }
 	}
 
-	//MutationsDB!
+	//IMutationsDB!
 	public function mutationsDatabase(page:int = 0, review:Boolean = false):void{
 		/*
 		Source: IMutationsLib.as for all mutations.
@@ -955,30 +956,28 @@ public class PerkMenu extends BaseContent {
 		}
 
 		menu();
-		var menuItems:Array = [];
+		var bd:ButtonDataList = new ButtonDataList();
 		//This was originally hard coded buttons. Which it can still be, I suppose.
-		menuItems.push("Heart",  curry(mutationsDBSlot, IMutationPerkType.SLOT_HEART), "Heart Mutations");
-		menuItems.push("Muscle",  curry(mutationsDBSlot, IMutationPerkType.SLOT_MUSCLE), "Muscle Mutations");
-		menuItems.push("Mouth",  curry(mutationsDBSlot, IMutationPerkType.SLOT_MOUTH), "Mouth Mutations");
-		menuItems.push("Adrenal Glands", curry(mutationsDBSlot, IMutationPerkType.SLOT_ADRENALS), "Adrenal Mutations");
-		menuItems.push("Bloodstream", curry(mutationsDBSlot, IMutationPerkType.SLOT_BLOODSTREAM), "Bloodstream Mutations");
-		menuItems.push("Fat and Tissue",  curry(mutationsDBSlot, IMutationPerkType.SLOT_FAT), "FaT Mutations");
-		menuItems.push("Lungs", curry(mutationsDBSlot, IMutationPerkType.SLOT_LUNGS), "Lungs Mutations");
-		menuItems.push("Metabolism",  curry(mutationsDBSlot, IMutationPerkType.SLOT_METABOLISM), "Metabolism Mutations");
-		menuItems.push("Ovaries",  curry(mutationsDBSlot, IMutationPerkType.SLOT_OVARIES), "Ovaries Mutations");
-		menuItems.push("Testicles",  curry(mutationsDBSlot, IMutationPerkType.SLOT_TESTICLES), "Testicle Mutations");
-		menuItems.push("Eyes",  curry(mutationsDBSlot, IMutationPerkType.SLOT_EYES), "Eyes Mutations");
-		menuItems.push("Bone/Marrow",  curry(mutationsDBSlot, IMutationPerkType.SLOT_BONE), "Bone Mutations");
-		menuItems.push("Nerv/Sys", curry(mutationsDBSlot, IMutationPerkType.SLOT_NERVSYS, 1), "Nerv-Sys Mutations");
-		menuItems.push("Thyroid Gland", curry(mutationsDBSlot, IMutationPerkType.SLOT_THYROID, 1), "Thyroid Mutations");
-		menuItems.push("Parathyroid Gland", curry(mutationsDBSlot, IMutationPerkType.SLOT_PARATHYROID, 1), "Parathyroid Mutations");
-		menuItems.push("Adaptations", curry(mutationsDBSlot, IMutationPerkType.SLOT_ADAPTATIONS, 1), "Adaptation Mutations");
-		menuItems.push("Dragons", mutationsDBDragon, "Dragon Mutations");
-		menuItems.push("Kitsunes", mutationsDBKitsune, "Kitsune Mutations");
-		//mutDbPage = page;
-		menuGen(menuItems, page, displayPerks);
+		bd.add("Heart",  curry(mutationsDBSlot, IMutationPerkType.SLOT_HEART), "Heart Mutations");
+		bd.add("Muscle",  curry(mutationsDBSlot, IMutationPerkType.SLOT_MUSCLE), "Muscle Mutations");
+		bd.add("Mouth",  curry(mutationsDBSlot, IMutationPerkType.SLOT_MOUTH), "Mouth Mutations");
+		bd.add("Adrenal Glands", curry(mutationsDBSlot, IMutationPerkType.SLOT_ADRENALS), "Adrenal Mutations");
+		bd.add("Bloodstream", curry(mutationsDBSlot, IMutationPerkType.SLOT_BLOODSTREAM), "Bloodstream Mutations");
+		bd.add("Fat and Tissue",  curry(mutationsDBSlot, IMutationPerkType.SLOT_FAT), "FaT Mutations");
+		bd.add("Lungs", curry(mutationsDBSlot, IMutationPerkType.SLOT_LUNGS), "Lungs Mutations");
+		bd.add("Metabolism",  curry(mutationsDBSlot, IMutationPerkType.SLOT_METABOLISM), "Metabolism Mutations");
+		bd.add("Ovaries",  curry(mutationsDBSlot, IMutationPerkType.SLOT_OVARIES), "Ovaries Mutations");
+		bd.add("Testicles",  curry(mutationsDBSlot, IMutationPerkType.SLOT_TESTICLES), "Testicle Mutations");
+		bd.add("Eyes",  curry(mutationsDBSlot, IMutationPerkType.SLOT_EYES), "Eyes Mutations");
+		bd.add("Bone/Marrow",  curry(mutationsDBSlot, IMutationPerkType.SLOT_BONE), "Bone Mutations");
+		bd.add("Nerv/Sys", curry(mutationsDBSlot, IMutationPerkType.SLOT_NERVSYS, 1), "Nerv-Sys Mutations");
+		bd.add("Thyroid Gland", curry(mutationsDBSlot, IMutationPerkType.SLOT_THYROID, 1), "Thyroid Mutations");
+		bd.add("Parathyroid Gland", curry(mutationsDBSlot, IMutationPerkType.SLOT_PARATHYROID, 1), "Parathyroid Mutations");
+		bd.add("Adaptations", curry(mutationsDBSlot, IMutationPerkType.SLOT_ADAPTATIONS, 1), "Adaptation Mutations");
+		bd.add("Dragons", mutationsDBDragon, "Dragon Mutations");
+		bd.add("Kitsunes", mutationsDBKitsune, "Kitsune Mutations");
+		submenu(bd, displayPerks, page, false);
 	}
-	//private var mutDbPage:int = 0;
 
 	//Mutations check helper. Cloned + stripped requirements logic from PerkMenuDB.
 	public function mutationsDatabaseVerify(mutationsArray:Array):void {
@@ -1038,7 +1037,7 @@ public class PerkMenu extends BaseContent {
 				outputText("\n\n")
 				var tempObj:Object = mutation.pBuffs(player)
 				for (var key:String in tempObj) {
-					outputText("Buffs " + StatUtils.explainBuff(key, tempObj[key]) + "\n");
+					outputText("" + StatUtils.explainBuff(key, tempObj[key]) + "\n");
 				}
 				outputText("\n");
 			}
@@ -1311,7 +1310,7 @@ public class PerkMenu extends BaseContent {
 
 		function pInfoDP(tPVal:int, e:TextEvent):void{	//Perk Display Information
 			clearOutput();
-			var selected:PerkClass = fPerkCList[e.text].perk;
+			var selected:PerkClass = fPerkCList[e.text].perk;	///For some reason, this is triggering and faulting here when opening racial scores from Aimozg.....what???
 			var tempStr:String = "";
 			var pPerkGDesc:Array = ["\nRequires (All of these perks): ", "\nRequires (Any of these perks): ", "\nUnlocks: "]
 			var pPerkGroup:Array = pRelations[selected.ptype];
@@ -1348,8 +1347,10 @@ public class PerkMenu extends BaseContent {
 			addButton(14, "Back", displayMenu, tPVal);
 		}
 
+		var lhVal:int = 0;
 		function dMenuLinker(tPVal:int, srcArr:Array):void{	//Interaction linking
-			fPerkCList = [];
+			var fPerkCList:Array = [];
+			lhVal = tPVal;
 			mainView.mainText.addEventListener(TextEvent.LINK, curry(pInfoDP, tPVal));
 			for each(var perk:PerkType in srcArr.sort()) {
 				var p:PerkClass = new PerkClass(perk,
@@ -1358,6 +1359,11 @@ public class PerkMenu extends BaseContent {
 				fPerkCList.push(lab);
 				outputText("<u><a href=\"event:"+fPerkCList.indexOf(lab)+"\">"+p.perkName+"</a></u>\n");
 			}
+		}
+
+		function cleanupBeforeReturns():void{
+			mainView.mainText.removeEventListener(TextEvent.LINK, curry(pInfoDP, lhVal));
+			displayPerks();
 		}
 
 		function displayMenu(tPVal:int = 0):void{	//Main Perk Database Display
@@ -1399,7 +1405,7 @@ public class PerkMenu extends BaseContent {
 			} else{
 				addButtonDisabled(4,"Next Page", "Highest Tier.")
 			}
-			addButton(14, "Back", displayPerks);
+			addButton(14, "Back", cleanupBeforeReturns);
 		}
 
 		displayMenu();

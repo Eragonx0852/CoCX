@@ -14,6 +14,7 @@ import classes.Items.*;
 import classes.Scenes.*;
 import classes.Scenes.NPCs.*;
 import classes.Scenes.Places.HeXinDao.AdventurerGuild;
+import classes.Stats.Buff;
 
 use namespace CoC;
 
@@ -1678,13 +1679,87 @@ public class SaveUpdater extends NPCAwareContent {
 				if (player.furColor == "lilac and white striped") player.furColor = "lilac and white";
 				if (player.hairColor == "lilac and white striped") player.hairColor = "lilac and white";
 				flags[kFLAGS.MOD_SAVE_VERSION] = 36.009;
-			}/*
-			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.008) {
+			}
+			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.010) {
+				flags[kFLAGS.FROSTY_TIMES_SPANKED] = 0; //reset the flag
+				flags[kFLAGS.MOD_SAVE_VERSION] = 36.010;
+			}
+			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.011) {
+				flags[kFLAGS.SCYLLA_CATS_RECALL_TRACKER] = 0; //new flag
+				if (flags[kFLAGS.UNKNOWN_FLAG_NUMBER_02137] == 1) flags[kFLAGS.SEX_MACHINE_STATUS] = -1; //sex machine disabled using its status now
+				flags[kFLAGS.UNKNOWN_FLAG_NUMBER_02137] = 0; //cleanup
+				flags[kFLAGS.MOD_SAVE_VERSION] = 36.011;
+			}
+			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.012) {
+				if (player.statStore.hasBuff("Drained")) player.statStore.removeBuffs("Drained");
+				if (flags[kFLAGS.MALI_BLADE_STATUS] == 1) { //old status = 'MALI BLADE GIVEN'
+					flags[kFLAGS.DOMINIKA_COVENANT] = 3; //stop Dominika encounters
+					outputText("\n\nDominika 'quest' is kinda finished. No epic battle for you, but you can finally visit Mali and take your tiny reward for giving up the fellatrix.");
+				}
+				flags[kFLAGS.MOD_SAVE_VERSION] = 36.012;
+			}
+			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.013) {
+				//Reclaimed flag cleanup. Just leaving it here until the next save update.
+				flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00937] = 0;
+				flags[kFLAGS.MOD_SAVE_VERSION] = 36.013;
+				outputText("<b>SceneHunter - new feature, 'Mock Fights', allowing to replay win/lose rape scenes with camp NPCs. Also, Loss Select wasn't properly saving its value outside of the save - fixed now.</b>")
+			}
+			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.014) {
+				// Reorder SPP (Old slot unlock order: 56-69, 0-55, 70-97; new is 0-97)
+				var spp:/*ItemSlotClass*/Array = inventory.pearlStorageDirectGet();
+				var n:int = 0, sz:int = inventory.pearlStorageSize(), nl:int = 0;
+				if (sz > 0 && sz < 70) {
+					for (var i:int = 56; i < 70; i++) {
+						if (spp[i].quantity > 0) {
+							for (var j:int = 0; j < i; j++) {
+								if (spp[j].isEmpty()) {
+									spp[j].setItemAndQty(spp[i].itype, spp[i].quantity)
+									spp[i].emptySlot();
+									if (j < sz) n++; // moved to unlocked slot
+									else nl++; // moved to locked slot
+								}
+							}
+						}
+					}
+					if (n>0) outputText("\n"+n+" item(s) moved from locked Sky Poison Pearl central section to the empty space at the beginning.");
+					if (nl>0) outputText("\nCouldn't move "+nl+" item(s) from locked Sky Poison Pearl central section; they are moved to next section to be unlocked.");
+				}
+				flags[kFLAGS.MOD_SAVE_VERSION] = 36.014;
+			}
+			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.015) {
+				flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00390] = 0; //Cleaning some temporal Hel flags
+				flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00392] = 0;
 				if (player.hasPerk(PerkLib.HclassHeavenTribulationSurvivor)) player.removePerk(PerkLib.HclassHeavenTribulationSurvivor);
 				if (player.hasPerk(PerkLib.GclassHeavenTribulationSurvivor)) player.removePerk(PerkLib.GclassHeavenTribulationSurvivor);
 				if (player.hasPerk(PerkLib.FclassHeavenTribulationSurvivor)) player.removePerk(PerkLib.FclassHeavenTribulationSurvivor);
-				flags[kFLAGS.MOD_SAVE_VERSION] = 36.008;
-			}*/
+				flags[kFLAGS.MOD_SAVE_VERSION] = 36.015;
+			}
+			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.016) {
+				flags[kFLAGS.UNKNOWN_FLAG_NUMBER_02216] = 0; //Isabella old flag cleanup.
+				if (player.hasStatusEffect(StatusEffects.PCClone)) player.removeStatusEffect(StatusEffects.PCClone);
+				flags[kFLAGS.MOD_SAVE_VERSION] = 36.016;
+			}
+			if (flags[kFLAGS.MOD_SAVE_VERSION] < 36.017) {
+				flags[kFLAGS.UNKNOWN_FLAG_NUMBER_02562] = 0; //Izma fishery cleanup.
+				// convert old buff tags to new ("item_"+itemid)
+				const ItemBuffsRename:Array = [
+					["RingOfWisdom", jewelries.RINGWIS.tagForBuffs],
+					["RingOfToughness", jewelries.RINGTOU.tagForBuffs],
+					["RingOfStrength", jewelries.RINGSTR.tagForBuffs],
+					["RingOfSpeed", jewelries.RINGSPE.tagForBuffs],
+					["RingOfLibido", jewelries.RINGLIB.tagForBuffs],
+					["RingOfSensitivity", jewelries.RINGSEN.tagForBuffs],
+					["RingOfIntelligence", jewelries.RINGINT.tagForBuffs],
+				];
+				for each (var pair:Array in ItemBuffsRename) {
+					for each (var buff:Buff in player.buff(pair[0]).findAllBuffObjects()) {
+						player.buff(pair[1]).setStat(buff.stat.statName, buff.value).withOptions(buff.options);
+					}
+					player.buff(pair[0]).remove();
+				}
+				flags[kFLAGS.MOD_SAVE_VERSION] = 36.017;
+			}
+			
 			outputText("\n\n<i>Save</i> version updated to " + flags[kFLAGS.MOD_SAVE_VERSION] + "\n");
 			doNext(camp.doCamp);
 			return;

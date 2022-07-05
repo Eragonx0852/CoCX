@@ -3,8 +3,11 @@
  */
 package coc.view {
 import classes.CoC;
+import classes.ItemSlotClass;
+import classes.ItemType;
 import classes.PerkLib;
 import classes.StatusEffects;
+import classes.internals.Utils;
 
 public class ButtonData {
 	public var text:String = "";
@@ -13,6 +16,8 @@ public class ButtonData {
 	public var visible:Boolean = true;
 	public var toolTipHeader:String = "";
 	public var toolTipText:String = "";
+	public var labelColor:String = CoCButton.DEFAULT_COLOR;
+	public var extraData:* = null;
 	public function ButtonData(text:String, callback:Function =null, toolTipText:String ="", toolTipHeader:String ="") {
 		this.text = text;
 		this.callback = callback;
@@ -40,9 +45,32 @@ public class ButtonData {
 		return this;
 	}
 	public function disableIf(condition:Boolean,toolTipText:String=null,toolTipHeader:String=null, text:String = null):ButtonData {
-		if (this.enabled && condition) {
+		if (condition) {
 			disable(toolTipText,toolTipHeader, text);
 		}
+		return this;
+	}
+	public function color(color:String):ButtonData {
+		labelColor = color;
+		return this;
+	}
+	
+	/**
+	 * Associate custom data with the button.
+	 */
+	public function extra(extraData:*):ButtonData {
+		this.extraData = extraData;
+		return this;
+	}
+	public function forItem(item:ItemType):ButtonData {
+		text = item.shortName;
+		hint(item.description, Utils.capitalizeFirstLetter(item.longName));
+		labelColor = item.buttonColor;
+		return this;
+	}
+	public function forItemSlot(slot:ItemSlotClass):ButtonData {
+		forItem(slot.itype);
+		if (slot.itype.stackSize > 1 || slot.quantity > 1) text += " x"+slot.quantity;
 		return this;
 	}
 	public function applyTo(btn:CoCButton):void {
@@ -51,7 +79,7 @@ public class ButtonData {
 		} else if (!enabled) {
 			btn.showDisabled(text, toolTipText, toolTipHeader);
 		} else {
-			btn.show(text, callback, toolTipText, toolTipHeader);
+			btn.show(text, callback, toolTipText, toolTipHeader).color(labelColor);
 		}
 	}
 	/**

@@ -92,7 +92,7 @@ public class EventParser {
             EngineCore.menu();
             EngineCore.addButton(0, "Game Over", gameOverMenuOverride).hint("Your game has ended. Please load a saved file or start a new game.");
             if (CoC.instance.flags[kFLAGS.HARDCORE_MODE] <= 0) EngineCore.addButton(1, "Continue", SceneLib.camp.wakeFromBadEnd).hint("It's all just a dream. Wake up.");
-			if (CoC.instance.player.hasStatusEffect(StatusEffects.PCClone) && CoC.instance.player.statusEffectv4(StatusEffects.PCClone) == 4) EngineCore.addButton(2, "Rebirth", SceneLib.camp.rebirthFromBadEnd).hint("You can move your nascent soul into your body clone achieving rebirth.");
+			if (CoC.instance.player.hasStatusEffect(StatusEffects.PCClone) && CoC.instance.player.statusEffectv4(StatusEffects.PCClone) >= 1) EngineCore.addButton(2, "Rebirth", SceneLib.camp.rebirthFromBadEnd).hint("You can move your nascent soul into your body clone achieving rebirth.");
             //addButton(3, "NewGamePlus", charCreation.newGamePlus).hint("Start a new game with your equipment, experience, and gems carried over.");
             if (CoC.instance.flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == 1 || CoC.instance.debug) EngineCore.addButton(4, "Debug Cheat", playerMenu);
             gameOverMenuOverride();
@@ -455,28 +455,12 @@ public class EventParser {
                 EngineCore.outputText("\n\nYour body reacts to the influx of nutrition, accelerating your pregnancy. Your belly bulges outward slightly.");
                 needNext = true;
             }
-            if (flags[kFLAGS.EVENT_PARSER_ESCAPE] == 1) {
-                flags[kFLAGS.EVENT_PARSER_ESCAPE] = 0;
-                return 2;
-            }
             flags[kFLAGS.DIAPAUSE_FLUID_STORE]--;
             if (player.pregnancyAdvance()) needNext = true; //Make sure pregnancy texts aren't hidden
-            if (flags[kFLAGS.EVENT_PARSER_ESCAPE] == 1) {
-                flags[kFLAGS.EVENT_PARSER_ESCAPE] = 0;
-                return 2;
-            }
             if (player.pregnancyAdvance()) needNext = true; //Make sure pregnancy texts aren't hidden
-            if (flags[kFLAGS.EVENT_PARSER_ESCAPE] == 1) {
-                flags[kFLAGS.EVENT_PARSER_ESCAPE] = 0;
-                return 2;
-            }
         }
         //checks not depending on diapause
         if (player.pregnancyAdvance()) needNext = true; //Make sure pregnancy texts aren't hidden
-        if (flags[kFLAGS.EVENT_PARSER_ESCAPE] == 1) {
-            flags[kFLAGS.EVENT_PARSER_ESCAPE] = 0;
-            return 2;
-        }
         //DOUBLE PREGGERS SPEED
         if (player.hasPerk(PerkLib.MaraesGiftFertility)) {
             if (player.pregnancyAdvance()) needNext = true; //Make sure pregnancy texts aren't hidden
@@ -485,19 +469,11 @@ public class EventParser {
         if (player.hasPerk(PerkLib.MagicalFertility)) {
             if (player.pregnancyAdvance()) needNext = true; //Make sure pregnancy texts aren't hidden
         }
-        if (flags[kFLAGS.EVENT_PARSER_ESCAPE] == 1) {
-            flags[kFLAGS.EVENT_PARSER_ESCAPE] = 0;
-            return 2;
-        }
         if (player.hasPerk(PerkLib.FerasBoonBreedingBitch)) {
             if (player.pregnancyAdvance()) needNext = true; //Make sure pregnancy texts aren't hidden
         }
         if (player.hasPerk(PerkLib.FerasBoonWideOpen) || player.hasPerk(PerkLib.FerasBoonMilkingTwat)) {
             if (player.pregnancyAdvance()) needNext = true; //Make sure pregnancy texts aren't hidden
-        }
-        if (flags[kFLAGS.EVENT_PARSER_ESCAPE] == 1) {
-            flags[kFLAGS.EVENT_PARSER_ESCAPE] = 0;
-            return 2;
         }
         //DOUBLE PREGGERS SPEED
         if (player.hasPerk(PerkLib.BroodMother)) {
