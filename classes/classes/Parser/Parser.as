@@ -223,6 +223,89 @@ public class Parser
 		}
 
 
+		private static var _inItalic:Boolean    = false;
+		private static var _inSpeech:Boolean    = false;
+		private static var _inBold:Boolean      = false;
+		private static var _inUnderline:Boolean = false;
+
+		// Keeps track of the order of currently open format tags to ensure that closing tags are in the correct order.
+		private static var _formatStack:Array = [];
+		private static function handleFormatSwitch(textContent:String):String {
+			var formatStr:String    = textContent.match(/^(say|[biu]{1,3})(?:start|end)$/i)[1].toLowerCase();
+			var isSpeech:Boolean    = formatStr == "say";
+
+			var returnString:String = "";
+
+			var formatTags:Array = formatStr.split("");
+			if (isSpeech) {
+				formatTags = ["i"];
+			}
+
+			var needOrderTags:* = {};
+			var needOrderCount:int = 0;
+			var newOpenTags:Array = [];
+
+			for each (var formatTag:String in formatTags) {
+				var areIn:Boolean = false;
+				switch (formatTag) {
+					case "b": areIn = _inBold; _inBold = !_inBold; break;
+					case "i": areIn = _inItalic; _inItalic = !_inItalic; break;
+					case "u": areIn = _inUnderline; _inUnderline = !_inUnderline; break;
+				}
+				if (areIn) {
+					needOrderTags[formatTag] = "</" + formatTag + ">";
+					needOrderCount += 1;
+				} else {
+					returnString += "<" + formatTag + ">";
+					newOpenTags.push(formatTag);
+				}
+			}
+
+			var orderedCloseTags:String = "";
+
+			// Workaround for inverted formats not maintaining the same order on reopen:
+			//     Close any open tags that are needed before the ones in the current format string, then
+			//     reopen them after the ones in the format string have been closed.
+			var reapplyOpenTags:Array = [];
+
+			while (needOrderCount > 0) {
+				if (_formatStack.length <= 0) {
+					//TODO: Error to screen? For now just log then return all the close tags and move on
+					trace("Empty format stack while trying to locate opening to tags: " + formatStr);
+					return orderedCloseTags;
+				}
+				var lastOpenTag:String = _formatStack.pop();
+				if (lastOpenTag in needOrderTags) {
+					needOrderCount -= 1;
+					orderedCloseTags += needOrderTags[lastOpenTag];
+				} else {
+					orderedCloseTags += "</" + lastOpenTag + ">";
+					reapplyOpenTags.push(lastOpenTag)
+				}
+			}
+
+			for each (var tag:String in reapplyOpenTags) {
+				_formatStack.push(tag);
+				orderedCloseTags += "<" + tag + ">";
+			}
+
+			if (newOpenTags.length > 0) {
+				_formatStack = _formatStack.concat(newOpenTags)
+			}
+
+			if (isSpeech) {
+				var isOpening:Boolean = textContent.indexOf("start") >= 0;
+				var quoteChar:String  = isOpening ? "\u201c" : "\u201d";
+				if (_inSpeech) {
+					returnString += quoteChar;
+				} else {
+					orderedCloseTags = quoteChar + orderedCloseTags;
+				}
+				_inSpeech = !_inSpeech;
+			}
+			return orderedCloseTags + returnString;
+		}
+
 
 
         /**
@@ -627,11 +710,15 @@ public class Parser
 
 			if (mainParserDebug) trace("WARNING: Not an if statement");
 			// Match a single word, with no leading or trailing space
+			var parserSwitchRegExp:RegExp  = /^(?:say|[biu]{1,3})(?:start|end)$/i;
 			var singleWordTagRegExp:RegExp = /^[\/\d\w-_.]+$/;
 			var doubleWordTagRegExp:RegExp = /^[\/\d\w-_.]+\s[\w\d-_.]+$/;
 
 			if (mainParserDebug) trace("WARNING: string length = ", textCtnt.length);
 
+			else if (parserSwitchRegExp.exec(textCtnt)) {
+				return handleFormatSwitch(textCtnt);
+			}
 			else if (singleWordTagRegExp.exec(textCtnt))
 			{
 				if (mainParserDebug) trace("WARNING: It's a single word!");
