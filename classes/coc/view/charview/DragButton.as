@@ -12,6 +12,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Timer;
 
+//Port from /hgg/ by Oxdeception
 public class DragButton {
     internal static var dragButtons:Array = [];
 
